@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS blog_posts (
     content_html LONGTEXT NOT NULL,
     content_html_en LONGTEXT,
     featured_image VARCHAR(500),
-    author_name VARCHAR(255) DEFAULT 'Tim Tagih Otomatis',
+    author_name VARCHAR(255) DEFAULT 'Tim Jagad Shalawat',
     category VARCHAR(100),
     tags JSON,
     source_url VARCHAR(500),

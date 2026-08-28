@@ -3,7 +3,7 @@ name = "jagad-shalawat"
 version = "0.1.0"
 edition = "2021"
 description = "Ultra-fast blog engine for jagadshalawat.org — Rust + MariaDB + Redis"
-authors = ["Tagih Otomatis Team"]
+authors = ["Jagad Shalawat Team"]
 
 [dependencies]
 # Web framework

@@ -47,7 +47,7 @@ pub fn generate_json_ld_article(post: &BlogPost, base_url: &str, lang: &str) -> 
     let author_name = if !post.author_name.is_empty() {
         &post.author_name
     } else {
-        post.source_name.as_deref().unwrap_or("Tim Tagih Otomatis")
+        post.source_name.as_deref().unwrap_or("Tim Jagad Shalawat")
     };
     
     let json = format!(r#"<script type="application/ld+json">

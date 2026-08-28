@@ -1,4 +1,4 @@
-# Panduan Deployment Tagih Otomatis Blog (GCP VPS + OpenLiteSpeed)
+# Panduan Deployment Jagad Shalawat Blog (GCP VPS + OpenLiteSpeed)
 
 Tahap ini mencakup persiapan server, instalasi dependensi (Redis), konfigurasi daemon systemd, dan konfigurasi *Reverse Proxy* di OpenLiteSpeed agar blog Rust kita bisa diakses melalui `jagadshalawat.org/blog`.
 
@@ -47,13 +47,13 @@ Agar aplikasi Rust terus berjalan di latar belakang dan otomatis menyala kembali
 
 Buat file service baru:
 ```bash
-sudo nano /etc/systemd/system/tagih-blog.service
+sudo nano /etc/systemd/system/jagad-shalawat-blog.service
 ```
 
 Isi dengan konfigurasi berikut:
 ```ini
 [Unit]
-Description=Tagih Otomatis Blog (Rust)
+Description=Jagad Shalawat Blog (Rust)
 After=network.target mysql.service redis-server.service
 
 [Service]
@@ -74,9 +74,9 @@ WantedBy=multi-user.target
 Simpan dan jalankan daemon:
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable tagih-blog
-sudo systemctl start tagih-blog
-sudo systemctl status tagih-blog
+sudo systemctl enable jagad-shalawat-blog
+sudo systemctl start jagad-shalawat-blog
+sudo systemctl status jagad-shalawat-blog
 ```
 Jika statusnya *active (running)*, maka blog backend sudah berhasil menyala di port `8080`.
 

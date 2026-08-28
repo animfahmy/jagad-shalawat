@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =================================================================
-# Tagih Otomatis Blog — Deployment Script
+# Jagad Shalawat Blog — Deployment Script
 # Deploy Rust binary to GCP VPS
 # =================================================================
 
@@ -10,9 +10,9 @@ readonly REMOTE_USER="${REMOTE_USER:-root}"
 readonly REMOTE_HOST="${REMOTE_HOST:-your-gcp-ip}"
 readonly REMOTE_DIR="/var/www/jagad-shalawat"
 readonly BINARY_NAME="jagad-shalawat"
-readonly SERVICE_NAME="tagih-blog"
+readonly SERVICE_NAME="jagad-shalawat-blog"
 
-echo "🚀 Deploying Tagih Otomatis Blog to ${REMOTE_HOST}..."
+echo "🚀 Deploying Jagad Shalawat Blog to ${REMOTE_HOST}..."
 
 # Check if binary exists
 if [ ! -f "target/x86_64-unknown-linux-gnu/release/${BINARY_NAME}" ]; then

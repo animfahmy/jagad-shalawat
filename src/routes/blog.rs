@@ -35,11 +35,11 @@ pub async fn index(
     ctx.insert("total_pages", &total_pages);
     ctx.insert("lang", "id");
     ctx.insert("base_url", &state.config.base_url);
-    ctx.insert("page_title", "Blog — Tagih Otomatis");
+    ctx.insert("page_title", "Blog — Jagad Shalawat");
     ctx.insert("page_description", "Artikel seputar teknologi pembayaran digital, pembayaran syariah, dan kemudahan penagihan otomatis.");
     ctx.insert("canonical_url", &format!("{}/blog", state.config.base_url));
     ctx.insert("og_tags", &seo::generate_og_tags(
-        "Blog — Tagih Otomatis",
+        "Blog — Jagad Shalawat",
         "Artikel seputar teknologi pembayaran digital, pembayaran syariah, dan kemudahan penagihan otomatis.",
         None,
         &format!("{}/blog", state.config.base_url),
@@ -83,7 +83,7 @@ pub async fn by_category(
 
     let category_title = category.replace('-', " ");
     let formatted_title = capitalize_words(&category_title);
-    let page_title = format!("{} — Blog Tagih Otomatis", formatted_title);
+    let page_title = format!("{} — Blog Jagad Shalawat", formatted_title);
 
     let mut ctx = tera::Context::new();
     ctx.insert("posts", &posts);
@@ -96,7 +96,7 @@ pub async fn by_category(
     ctx.insert("alternate_lang_url", &format!("/blog/en/category/{}", category));
     ctx.insert("base_url", &state.config.base_url);
     ctx.insert("page_title", &page_title);
-    ctx.insert("page_description", &format!("Artikel kategori {} di Blog Tagih Otomatis", formatted_title));
+    ctx.insert("page_description", &format!("Artikel kategori {} di Blog Jagad Shalawat", formatted_title));
     ctx.insert("canonical_url", &format!("{}/blog/kategori/{}", state.config.base_url, category));
 
     let html = state.tera.render("blog/category.html", &ctx)?;
@@ -179,7 +179,7 @@ pub async fn show(
     ctx.insert("lang", "id");
     ctx.insert("alternate_lang_url", &alternate_lang_url);
     ctx.insert("base_url", &state.config.base_url);
-    ctx.insert("page_title", &format!("{} — Blog Tagih Otomatis", post.title.clone()));
+    ctx.insert("page_title", &format!("{} — Blog Jagad Shalawat", post.title.clone()));
     ctx.insert("page_description", &post.meta_description.as_deref().unwrap_or(&post.excerpt.as_deref().unwrap_or("")));
     ctx.insert("canonical_url", &format!("{}/blog/{}", state.config.base_url, post.slug));
     ctx.insert("turnstile_site_key", &state.config.turnstile_site_key);

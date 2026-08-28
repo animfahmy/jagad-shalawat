@@ -28,12 +28,12 @@ async fn generate_rss(state: &AppState, lang: &str) -> Result<HttpResponse, AppE
 
     let (title, description, link) = match lang {
         "en" => (
-            "Tagih Otomatis Blog",
+            "Jagad Shalawat Blog",
             "Articles about digital payment technology, sharia-compliant payments, and automated billing.",
             format!("{}/blog/en", state.config.base_url),
         ),
         _ => (
-            "Blog Tagih Otomatis",
+            "Blog Jagad Shalawat",
             "Artikel seputar teknologi pembayaran digital, pembayaran syariah, dan penagihan otomatis.",
             format!("{}/blog", state.config.base_url),
         ),
@@ -51,7 +51,7 @@ async fn generate_rss(state: &AppState, lang: &str) -> Result<HttpResponse, AppE
   <atom:link href="{link}/feed.xml" rel="self" type="application/rss+xml"/>
   <language>{lang_code}</language>
   <lastBuildDate>{now}</lastBuildDate>
-  <generator>Tagih Otomatis Blog Engine (Rust)</generator>
+  <generator>Jagad Shalawat Blog Engine (Rust)</generator>
 "#,
         title = escape_xml(title),
         description = escape_xml(description),

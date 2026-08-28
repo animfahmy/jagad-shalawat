@@ -11,7 +11,7 @@
     {% if og_tags %}{{ og_tags | safe }}{% endif %}
     {% if hreflang_tags %}{{ hreflang_tags | safe }}{% endif %}
     
-    <link rel="alternate" type="application/rss+xml" title="Blog Tagih Otomatis" href="{{ base_url | safe }}/blog/feed.xml">
+    <link rel="alternate" type="application/rss+xml" title="Blog Jagad Shalawat" href="{{ base_url | safe }}/blog/feed.xml">
     
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://www.gravatar.com">
@@ -63,8 +63,8 @@
 <body>
     <header class="site-header">
         <nav class="container nav-container">
-            <a href="{{ base_url | safe }}" class="logo" aria-label="Tagih Otomatis">
-                <strong>Tagih Otomatis</strong>
+            <a href="{{ base_url | safe }}" class="logo" aria-label="Jagad Shalawat">
+                <strong>Jagad Shalawat</strong>
             </a>
             <div class="nav-links">
                 <a href="/blog">Blog</a>
@@ -73,7 +73,6 @@
                 {% else %}
                 <a href="{% if alternate_lang_url %}{{ alternate_lang_url }}{% else %}/blog{% endif %}" title="Versi Indonesia"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" width="1.2em" height="1.2em" style="vertical-align:-0.15em; border:1px solid #ccc; border-radius:2px; margin-right:0.25rem"><rect width="3" height="1" fill="#ce1126"/><rect width="3" height="1" y="1" fill="#fff"/></svg> ID</a>
                 {% endif %}
-                <a href="{{ base_url | safe }}" class="btn-cta">{% if lang == "en" %}Try Free{% else %}Coba Gratis{% endif %}</a>
             </div>
         </nav>
     </header>
@@ -85,7 +84,7 @@
     <footer class="site-footer">
         <div class="container footer-content">
             <div class="footer-brand">
-                <strong>Tagih Otomatis</strong>
+                <strong>Jagad Shalawat</strong>
                 <p>{% if lang == "en" %}Automated billing system for organizations.{% else %}Sistem penagihan otomatis untuk organisasi.{% endif %}</p>
             </div>
             <div class="footer-links">
@@ -103,7 +102,7 @@
             </div>
         </div>
         <div class="container footer-bottom">
-            <p>&copy; {{ now() | date(format="%Y") }} Tagih Otomatis. {% if lang == "en" %}All rights reserved.{% else %}Hak cipta dilindungi.{% endif %}</p>
+            <p>&copy; {{ now() | date(format="%Y") }} Jagad Shalawat. {% if lang == "en" %}All rights reserved.{% else %}Hak cipta dilindungi.{% endif %}</p>
         </div>
     {% block scripts %}{% endblock %}
 

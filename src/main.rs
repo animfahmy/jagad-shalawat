@@ -66,7 +66,7 @@ async fn main() -> std::io::Result<()> {
     // Extract bind address, defaulting to 127.0.0.1:8080 if not set or just using the config
     let bind_addr = config.bind_address.clone();
 
-    log::info!("🚀 Tagih Otomatis Blog running on {}", bind_addr);
+    log::info!("🚀 Jagad Shalawat Blog running on {}", bind_addr);
 
     HttpServer::new(move || {
         let session_mw = SessionMiddleware::builder(CookieSessionStore::default(), session_key.clone())

@@ -1,5 +1,5 @@
 /**
- * Tagih Otomatis Blog — Comment Handler
+ * Jagad Shalawat Blog — Comment Handler
  * Minimal vanilla JS for comment form interactions (< 3KB)
  */
 (function() {
