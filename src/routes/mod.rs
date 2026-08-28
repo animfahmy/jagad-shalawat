@@ -1,5 +1,5 @@
 pub mod blog;
-pub mod blog_en;
+pub mod blog_ar;
 pub mod comment;
 pub mod sitemap;
 pub mod feed;
@@ -20,22 +20,22 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
         .route("/blog/kategori/{category}", web::get().to(blog::by_category))
         .route("/blog/category/{category}", web::get().to(blog::by_category))
 
-        // ── Public blog routes (English) ─────────────────────────────
-        .route("/blog/en", web::get().to(blog_en::index))
-        .route("/blog/en/", web::get().to(blog_en::index))
-        .route("/blog/en/category/{category}", web::get().to(blog_en::by_category))
-        .route("/blog/en/kategori/{category}", web::get().to(blog_en::by_category))
+        // ── Public blog routes (Arabic) ─────────────────────────────
+        .route("/blog/ar", web::get().to(blog_ar::index))
+        .route("/blog/ar/", web::get().to(blog_ar::index))
+        .route("/blog/ar/category/{category}", web::get().to(blog_ar::by_category))
+        .route("/blog/ar/kategori/{category}", web::get().to(blog_ar::by_category))
 
         // ── Comments ─────────────────────────────────────────────────
         .route("/blog/{slug}/komentar", web::post().to(comment::submit))
         .route("/blog/{slug}/comment", web::post().to(comment::submit))
-        .route("/blog/en/{slug}/comment", web::post().to(comment::submit))
-        .route("/blog/en/{slug}/komentar", web::post().to(comment::submit))
+        .route("/blog/ar/{slug}/comment", web::post().to(comment::submit))
+        .route("/blog/ar/{slug}/komentar", web::post().to(comment::submit))
 
         // ── SEO feeds ────────────────────────────────────────────────
         .route("/blog/sitemap.xml", web::get().to(sitemap::sitemap_xml))
         .route("/blog/feed.xml", web::get().to(feed::rss_id))
-        .route("/blog/en/feed.xml", web::get().to(feed::rss_en))
+        .route("/blog/ar/feed.xml", web::get().to(feed::rss_ar))
 
         // ── OAuth callbacks ──────────────────────────────────────────
         .route("/blog/auth/google", web::get().to(auth::google_login))
@@ -91,6 +91,6 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
         // Admin: Cache management
         .route("/blog/admin/cache/clear", web::post().to(admin::dashboard::clear_cache))
         // ── Catch-all dynamic routes (must be last) ──────────────────
-        .route("/blog/en/{slug}", web::get().to(blog_en::show))
+        .route("/blog/ar/{slug}", web::get().to(blog_ar::show))
         .route("/blog/{slug}", web::get().to(blog::show));
 }

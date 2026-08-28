@@ -27,14 +27,14 @@ pub async fn sitemap_xml(state: web::Data<AppState>) -> Result<HttpResponse, App
         r#"  <url>
     <loc>{base}/blog</loc>
     <xhtml:link rel="alternate" hreflang="id" href="{base}/blog"/>
-    <xhtml:link rel="alternate" hreflang="en" href="{base}/blog/en"/>
+    <xhtml:link rel="alternate" hreflang="en" href="{base}/blog/ar"/>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>{base}/blog/en</loc>
+    <loc>{base}/blog/ar</loc>
     <xhtml:link rel="alternate" hreflang="id" href="{base}/blog"/>
-    <xhtml:link rel="alternate" hreflang="en" href="{base}/blog/en"/>
+    <xhtml:link rel="alternate" hreflang="en" href="{base}/blog/ar"/>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -62,7 +62,7 @@ pub async fn sitemap_xml(state: web::Data<AppState>) -> Result<HttpResponse, App
 
         if let Some(ref sen) = slug_en {
             xml.push_str(&format!(
-                r#"    <xhtml:link rel="alternate" hreflang="en" href="{base}/blog/en/{slug_en}"/>
+                r#"    <xhtml:link rel="alternate" hreflang="en" href="{base}/blog/ar/{slug_en}"/>
 "#,
                 base = state.config.base_url,
                 slug_en = sen,
@@ -74,10 +74,10 @@ pub async fn sitemap_xml(state: web::Data<AppState>) -> Result<HttpResponse, App
         if let Some(ref sen) = slug_en {
             xml.push_str(&format!(
                 r#"  <url>
-    <loc>{base}/blog/en/{slug_en}</loc>
+    <loc>{base}/blog/ar/{slug_en}</loc>
     <lastmod>{lastmod}</lastmod>
     <xhtml:link rel="alternate" hreflang="id" href="{base}/blog/{slug}"/>
-    <xhtml:link rel="alternate" hreflang="en" href="{base}/blog/en/{slug_en}"/>
+    <xhtml:link rel="alternate" hreflang="en" href="{base}/blog/ar/{slug_en}"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

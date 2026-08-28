@@ -9,8 +9,8 @@ pub async fn rss_id(state: web::Data<AppState>) -> Result<HttpResponse, AppError
     generate_rss(&state, "id").await
 }
 
-/// GET /blog/en/feed.xml — RSS 2.0 feed (English)
-pub async fn rss_en(state: web::Data<AppState>) -> Result<HttpResponse, AppError> {
+/// GET /blog/ar/feed.xml — RSS 2.0 feed (English)
+pub async fn rss_ar(state: web::Data<AppState>) -> Result<HttpResponse, AppError> {
     generate_rss(&state, "en").await
 }
 
@@ -30,7 +30,7 @@ async fn generate_rss(state: &AppState, lang: &str) -> Result<HttpResponse, AppE
         "en" => (
             "Jagad Shalawat Blog",
             "Articles about digital payment technology, sharia-compliant payments, and automated billing.",
-            format!("{}/blog/en", state.config.base_url),
+            format!("{}/blog/ar", state.config.base_url),
         ),
         _ => (
             "Blog Jagad Shalawat",
@@ -66,7 +66,7 @@ async fn generate_rss(state: &AppState, lang: &str) -> Result<HttpResponse, AppE
                 let t = post.title_en.as_deref().unwrap_or(&post.title);
                 let d = post.excerpt_en.as_deref().unwrap_or(post.excerpt.as_deref().unwrap_or(""));
                 let slug = post.slug_en.as_deref().unwrap_or(&post.slug);
-                let l = format!("{}/blog/en/{}", state.config.base_url, slug);
+                let l = format!("{}/blog/ar/{}", state.config.base_url, slug);
                 (t.to_string(), d.to_string(), l)
             }
             _ => {

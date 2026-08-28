@@ -70,7 +70,7 @@
                 <div class="card-body">
                     <div class="tabs">
                         <div class="tab tab-id active" onclick="switchTab('id')">Indonesian</div>
-                        <div class="tab tab-en" onclick="switchTab('en')">English</div>
+                        <div class="tab tab-ar" onclick="switchTab('ar')">Arabic (AR)</div>
                     </div>
                     
                     <!-- ID Content -->
@@ -89,28 +89,28 @@
                             <textarea id="excerpt" name="excerpt" class="form-control" rows="3">{{ p_excerpt }}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="content_markdown">Content (ID - Markdown)</label>
+                            <label for="content_markdown">Content (ID)</label>
                             <textarea id="content_markdown" name="content_markdown" class="form-control editor-textarea" required>{{ p_content_markdown }}</textarea>
                             <div class="help-text">Use Markdown. Use &lt;!-- more --&gt; to split if needed.</div>
                         </div>
                     </div>
                     
-                    <!-- EN Content -->
-                    <div id="content-en" class="tab-content">
+                    <!-- AR Content -->
+                    <div id="content-ar" class="tab-content">
                         <div class="form-group">
-                            <label for="title_en">Title (EN)</label>
+                            <label for="title_en">Title (AR)</label>
                             <input type="text" id="title_en" name="title_en" class="form-control" value="{{ p_title_en }}" onchange="if(!document.getElementById('slug_en').value) autoGenerateSlug('title_en', 'slug_en')">
                         </div>
                         <div class="form-group">
-                            <label for="slug_en">Slug (EN)</label>
+                            <label for="slug_en">Slug (AR)</label>
                             <input type="text" id="slug_en" name="slug_en" class="form-control" value="{{ p_slug_en }}">
                         </div>
                         <div class="form-group">
-                            <label for="excerpt_en">Excerpt (EN)</label>
+                            <label for="excerpt_en">Excerpt (AR)</label>
                             <textarea id="excerpt_en" name="excerpt_en" class="form-control" rows="3">{{ p_excerpt_en }}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="content_markdown_en">Content (EN - Markdown)</label>
+                            <label for="content_markdown_en">Content (AR)</label>
                             <textarea id="content_markdown_en" name="content_markdown_en" class="form-control editor-textarea">{{ p_content_markdown_en }}</textarea>
                         </div>
                         <div style="text-align: right; margin-top: 1rem;">
@@ -129,9 +129,9 @@
                         <div class="help-text">Kosongkan jika ingin otomatis mengambil dari Excerpt (ID). Maksimal ~160 karakter.</div>
                     </div>
                     <div class="form-group">
-                        <label for="meta_description_en">Meta Description (EN)</label>
-                        <textarea id="meta_description_en" name="meta_description_en" class="form-control" rows="2" placeholder="Search engine description (English)...">{{ p_meta_description_en }}</textarea>
-                        <div class="help-text">Leave blank to automatically use Excerpt (EN). Max ~160 characters.</div>
+                        <label for="meta_description_en">Meta Description (AR)</label>
+                        <textarea id="meta_description_en" name="meta_description_en" class="form-control" rows="2" placeholder="Search engine description (Arabic (AR))...">{{ p_meta_description_en }}</textarea>
+                        <div class="help-text">Leave blank to automatically use Excerpt (AR). Max ~160 characters.</div>
                     </div>
                 </div>
             </div>

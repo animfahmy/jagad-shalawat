@@ -6,7 +6,7 @@ use crate::AppState;
 
 const POSTS_PER_PAGE: i64 = 12;
 
-/// GET /blog/en — Blog listing page (English)
+/// GET /blog/ar — Blog listing page (English)
 pub async fn index(
     state: web::Data<AppState>,
     query: web::Query<PaginationQuery>,
@@ -34,17 +34,17 @@ pub async fn index(
     ctx.insert("base_url", &state.config.base_url);
     ctx.insert("page_title", "Blog — Jagad Shalawat");
     ctx.insert("page_description", "Articles about digital payment technology, sharia-compliant payments, and automated billing solutions.");
-    ctx.insert("canonical_url", &format!("{}/blog/en", state.config.base_url));
+    ctx.insert("canonical_url", &format!("{}/blog/ar", state.config.base_url));
     ctx.insert("og_tags", &seo::generate_og_tags(
         "Blog — Jagad Shalawat",
         "Articles about digital payment technology, sharia-compliant payments, and automated billing solutions.",
         None,
-        &format!("{}/blog/en", state.config.base_url),
+        &format!("{}/blog/ar", state.config.base_url),
         "en_US",
     ));
     ctx.insert("hreflang_tags", "");
 
-    let html = state.tera.render("blog/index_en.html", &ctx)?;
+    let html = state.tera.render("blog/index_ar.html", &ctx)?;
     state.cache.set(&cache_key, &html, 86400).await?;
 
     Ok(HttpResponse::Ok()
@@ -54,7 +54,7 @@ pub async fn index(
         .body(html))
 }
 
-/// GET /blog/en/category/{category} or /blog/en/kategori/{category} — Articles filtered by category (English)
+/// GET /blog/ar/category/{category} or /blog/ar/kategori/{category} — Articles filtered by category (English)
 pub async fn by_category(
     state: web::Data<AppState>,
     path: web::Path<String>,
@@ -92,7 +92,7 @@ pub async fn by_category(
     ctx.insert("base_url", &state.config.base_url);
     ctx.insert("page_title", &page_title);
     ctx.insert("page_description", &format!("Articles in category {} on Jagad Shalawat Blog", formatted_title));
-    ctx.insert("canonical_url", &format!("{}/blog/en/category/{}", state.config.base_url, category));
+    ctx.insert("canonical_url", &format!("{}/blog/ar/category/{}", state.config.base_url, category));
 
     let html = state.tera.render("blog/category.html", &ctx)?;
     state.cache.set(&cache_key, &html, 86400).await?;
@@ -106,7 +106,7 @@ pub async fn by_category(
 
 use actix_session::Session;
 
-/// GET /blog/en/{slug} — Single article page (English)
+/// GET /blog/ar/{slug} — Single article page (English)
 pub async fn show(
     state: web::Data<AppState>,
     path: web::Path<String>,
@@ -167,7 +167,7 @@ pub async fn show(
     ctx.insert("base_url", &state.config.base_url);
     ctx.insert("page_title", &format!("{} — Jagad Shalawat Blog", title_en));
     ctx.insert("page_description", desc_en);
-    ctx.insert("canonical_url", &format!("{}/blog/en/{}", state.config.base_url, slug_en));
+    ctx.insert("canonical_url", &format!("{}/blog/ar/{}", state.config.base_url, slug_en));
     ctx.insert("turnstile_site_key", &state.config.turnstile_site_key);
 
     // Commenter user info
@@ -187,7 +187,7 @@ pub async fn show(
         title_en,
         desc_en,
         post.featured_image.as_deref(),
-        &format!("{}/blog/en/{}", state.config.base_url, slug_en),
+        &format!("{}/blog/ar/{}", state.config.base_url, slug_en),
         "en_US",
     ));
     ctx.insert("hreflang_tags", &seo::generate_hreflang_tags(
@@ -197,11 +197,11 @@ pub async fn show(
     ));
     ctx.insert("breadcrumb_ld", &seo::generate_json_ld_breadcrumb(&[
         ("Home".into(), state.config.base_url.clone()),
-        ("Blog".into(), format!("{}/blog/en", state.config.base_url)),
-        (title_en.to_string(), format!("{}/blog/en/{}", state.config.base_url, slug_en)),
+        ("Blog".into(), format!("{}/blog/ar", state.config.base_url)),
+        (title_en.to_string(), format!("{}/blog/ar/{}", state.config.base_url, slug_en)),
     ]));
 
-    let html = state.tera.render("blog/post_en.html", &ctx)?;
+    let html = state.tera.render("blog/post_ar.html", &ctx)?;
 
     let stats_key = format!("blog:stats:slug_en:{}", slug_en);
     let _ = state.cache.increment(&stats_key).await;

@@ -69,7 +69,7 @@
             <div class="nav-links">
                 <a href="/blog">Blog</a>
                 {% if lang == "id" %}
-                <a href="{% if alternate_lang_url %}{{ alternate_lang_url }}{% else %}/blog/en{% endif %}" title="English version"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="1.2em" height="1.2em" style="vertical-align:-0.15em; border:1px solid #ccc; border-radius:2px; margin-right:0.25rem"><clipPath id="t"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></svg> EN</a>
+                <a href="{% if alternate_lang_url %}{{ alternate_lang_url }}{% else %}/blog/ar{% endif %}" title="Arabic version"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" width="1.2em" height="1.2em" style="vertical-align:-0.15em; border:1px solid #ccc; border-radius:2px; margin-right:0.25rem"><path fill="#006233" d="M0 0h640v480H0z"/><path fill="#fff" d="M190 280h260v10H190zM350 220v-50h10v50zM350 220h-40v-10h40zM310 210v-30h10v30zM310 180h-20v-10h20zM290 170v-20h10v20zM290 150h-30v-10h30zM260 140v-10h10v10zM260 130h-40v-10h40z"/></svg> AR</a>
                 {% else %}
                 <a href="{% if alternate_lang_url %}{{ alternate_lang_url }}{% else %}/blog{% endif %}" title="Versi Indonesia"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" width="1.2em" height="1.2em" style="vertical-align:-0.15em; border:1px solid #ccc; border-radius:2px; margin-right:0.25rem"><rect width="3" height="1" fill="#ce1126"/><rect width="3" height="1" y="1" fill="#fff"/></svg> ID</a>
                 {% endif %}
@@ -85,24 +85,27 @@
         <div class="container footer-content">
             <div class="footer-brand">
                 <strong>Jagad Shalawat</strong>
-                <p>{% if lang == "en" %}Automated billing system for organizations.{% else %}Sistem penagihan otomatis untuk organisasi.{% endif %}</p>
+                <p>{% if lang == "ar" %}مجموعة من المقالات والأخبار والأجندات المتعلقة بمجلس تعليم وذكر جَاكَا د صَلَوَات.{% else %}Kumpulan artikel, berita, dan agenda seputar Majelis Ta'lim dan Dzikir Jagad Shalawat.{% endif %}</p>
             </div>
             <div class="footer-links">
                 <h4>Blog</h4>
-                <a href="/blog{% if lang == 'en' %}/en{% endif %}">{% if lang == "en" %}All Articles{% else %}Semua Artikel{% endif %}</a>
-                <a href="/blog{% if lang == 'en' %}/en{% endif %}/kategori/teknologi-pembayaran">{% if lang == "en" %}Payment Tech{% else %}Teknologi Pembayaran{% endif %}</a>
-                <a href="/blog{% if lang == 'en' %}/en{% endif %}/kategori/pembayaran-syariah">{% if lang == "en" %}Sharia Payments{% else %}Pembayaran Syariah{% endif %}</a>
-                <a href="/blog{% if lang == 'en' %}/en{% endif %}/kategori/pembayaran-digital">{% if lang == "en" %}Digital Payments{% else %}Pembayaran Digital{% endif %}</a>
+                <a href="/blog{% if lang == 'ar' %}/ar{% endif %}">{% if lang == "ar" %}All Articles{% else %}Semua Artikel{% endif %}</a>
+                <a href="/blog{% if lang == 'ar' %}/ar{% endif %}/kategori/teknologi-pembayaran">{% if lang == "ar" %}Payment Tech{% else %}Teknologi Pembayaran{% endif %}</a>
+                <a href="/blog{% if lang == 'ar' %}/ar{% endif %}/kategori/pembayaran-syariah">{% if lang == "ar" %}Sharia Payments{% else %}Pembayaran Syariah{% endif %}</a>
+                <a href="/blog{% if lang == 'ar' %}/ar{% endif %}/kategori/pembayaran-digital">{% if lang == "ar" %}Digital Payments{% else %}Pembayaran Digital{% endif %}</a>
             </div>
             <div class="footer-links">
-                <h4>{% if lang == "en" %}Links{% else %}Tautan{% endif %}</h4>
-                <a href="{{ base_url | safe }}">{% if lang == "en" %}Home{% else %}Beranda{% endif %}</a>
+                <h4>{% if lang == "ar" %}Links{% else %}Tautan{% endif %}</h4>
+                <a href="{{ base_url | safe }}">{% if lang == "ar" %}Home{% else %}Beranda{% endif %}</a>
                 <a href="/blog/feed.xml">RSS Feed</a>
                 <a href="/blog/sitemap.xml">Sitemap</a>
             </div>
         </div>
-        <div class="container footer-bottom">
-            <p>&copy; {{ now() | date(format="%Y") }} Jagad Shalawat. {% if lang == "en" %}All rights reserved.{% else %}Hak cipta dilindungi.{% endif %}</p>
+        <div class="container footer-bottom" style="text-align: center;">
+            <div style="font-family: 'Amiri', serif; font-size: 1.5rem; margin-bottom: 1.5rem; line-height: 2; color: var(--text-light);" dir="rtl">
+                "اللَّهُمَّ انْصُرْ وَاحْفَظْ وَأَيِّدْ جَاكَا د صَلَوَات فِي الْعَالَمِينَ بِحَقِّ سَيِّدِنَا مُحَمَّدٍ صَلَّى اللهُ عَلَيْهِ وَسَلَّمَ"
+            </div>
+            <p>&copy; {{ now() | date(format="%Y") }} Jagad Shalawat. {% if lang == "ar" %}All rights reserved.{% else %}Hak cipta dilindungi.{% endif %}</p>
         </div>
     {% block scripts %}{% endblock %}
 
