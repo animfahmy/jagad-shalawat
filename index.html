@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jagad Shalawat</title>
+    <meta name="description" content="Majelis Ta'lim dan Dzikir Jagad Shalawat. Berkhidmat untuk Umat.">
+    <meta name="keywords" content="majelis, jagad shalawat, malang, gus bayu, bayu, nabi, muhammad">
+    <meta name="author" content="Ust. Bayu">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    
+    <!-- Tailwind CSS -->
+    <script src="assets/tailwind.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="assets/lucide.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="assets/fonts.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#e0f2f1',
+                            DEFAULT: '#00695c',
+                            dark: '#004d40',
+                            accent: '#ffb300'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        arabic: ['Amiri', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .islamic-bg {
+            background-color: #004d40;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300695c' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50 text-gray-800 scroll-smooth">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <img class="h-10 w-10 mr-3" src="favicon.svg" alt="Logo Jagad Shalawat">
+                    <span class="font-bold text-xl text-brand-dark">Jagad Shalawat</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#beranda" class="text-gray-600 hover:text-brand-DEFAULT font-medium">Beranda</a>
+                    <a href="#tentang" class="text-gray-600 hover:text-brand-DEFAULT font-medium">Tentang</a>
+                    <a href="#kegiatan" class="text-gray-600 hover:text-brand-DEFAULT font-medium">Kegiatan</a>
+                    <a href="#acara" class="text-gray-600 hover:text-brand-DEFAULT font-medium">Acara</a>
+                    <div class="flex items-center ml-4 border-l pl-4 border-gray-300">
+                        <img src="assets/flags/id.svg" alt="Bahasa Indonesia" class="w-6 h-4 rounded-sm border border-gray-200" title="Bahasa Indonesia">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="beranda" class="islamic-bg pt-28 pb-20 md:pt-40 md:pb-32 text-center text-white relative">
+        <div class="max-w-4xl mx-auto px-4 relative z-10">
+            <h1 class="font-arabic text-4xl md:text-6xl mb-4 text-brand-accent">جَگَد صَلَوَات</h1>
+            <h2 class="text-4xl md:text-6xl font-bold mb-6">Jagad Shalawat</h2>
+            <p class="text-xl md:text-2xl font-light mb-10 italic">"Berkhidmat untuk umat"</p>
+            <a href="#kegiatan" class="inline-flex items-center bg-brand-accent text-brand-dark font-bold py-3 px-8 rounded-full hover:bg-yellow-400 transition duration-300">
+                <i data-lucide="book-open" class="mr-2"></i> Ikuti Kegiatan Kami
+            </a>
+        </div>
+    </section>
+
+    <!-- Highlight Acara Terdekat -->
+    <section id="acara" class="py-16 bg-brand-light">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row border-t-4 border-brand-accent">
+                <div class="bg-brand-dark text-white p-8 md:w-1/3 flex flex-col justify-center items-center text-center">
+                    <i data-lucide="calendar-clock" class="h-16 w-16 mb-4 text-brand-accent"></i>
+                    <h3 class="text-2xl font-bold mb-2 text-brand-accent">Acara Terdekat</h3>
+                    <p class="text-gray-100">Jangan lewatkan momen penuh berkah</p>
+                </div>
+                <div class="p-8 md:w-2/3">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <span id="countdown" class="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm font-semibold mb-3">Menghitung...</span>
+                            <h4 class="text-3xl font-bold text-gray-900 mb-2">Maulid Nabi Muhammad SAW</h4>
+                        </div>
+                    </div>
+                    <div class="space-y-3 mb-6 text-gray-600">
+                        <div class="flex items-center">
+                            <i data-lucide="calendar" class="h-5 w-5 mr-3 text-brand-DEFAULT"></i>
+                            <span>30 Agustus 2026</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-lucide="clock" class="h-5 w-5 mr-3 text-brand-DEFAULT"></i>
+                            <span>08:00 WIB - Selesai</span>
+                        </div>
+                        <div class="flex items-center items-start">
+                            <i data-lucide="map-pin" class="h-5 w-5 mr-3 mt-1 text-brand-DEFAULT shrink-0"></i>
+                            <span>Pendopo Al Anies Travel, Jl. Haji Alwi, Perum Tiara Cluster, Tirtomoyo, Kecamatan Pakis</span>
+                        </div>
+                    </div>
+                    <a href="#" class="inline-flex items-center text-brand-DEFAULT font-semibold hover:text-brand-dark">
+                        Lihat Detail <i data-lucide="arrow-right" class="h-4 w-4 ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tentang Kami -->
+    <section id="tentang" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-10 md:mb-0 md:pr-12">
+                <h3 class="text-3xl font-bold text-brand-dark mb-6 relative inline-block">
+                    Tentang Kami
+                    <span class="absolute bottom-0 left-0 w-1/2 h-1 bg-brand-accent rounded"></span>
+                </h3>
+                <p class="text-lg text-gray-600 mb-4 leading-relaxed">
+                    Majelis Ta'lim dan Dzikir Jagad Shalawat adalah wadah berkumpulnya umat untuk mendekatkan diri kepada Allah SWT dan Rasul-Nya. Berafiliasi dengan nilai-nilai luhur <strong>Nahdlatul Ulama (NU)</strong>, kami berkomitmen untuk melestarikan tradisi keagamaan Ahlussunnah wal Jamaah.
+                </p>
+                <p class="text-lg text-gray-600 leading-relaxed">
+                    Kami menanamkan rasa cinta yang mendalam terhadap dzuriyat Rasulullah SAW (para Habaib) serta menjunjung tinggi akhlakul karimah dalam kehidupan bermasyarakat, sejalan dengan motto kami <span class="italic">"Berkhidmat untuk umat"</span>.
+                </p>
+            </div>
+            <div class="md:w-1/2 grid grid-cols-2 gap-4">
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm text-center">
+                    <i data-lucide="heart-handshake" class="h-10 w-10 mx-auto text-brand-DEFAULT mb-3"></i>
+                    <h4 class="font-bold text-gray-900 mb-2">Nahdlatul Ulama</h4>
+                    <p class="text-sm text-gray-500">Berpegang teguh pada amaliyah tradisi NU.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm text-center">
+                    <i data-lucide="users" class="h-10 w-10 mx-auto text-brand-DEFAULT mb-3"></i>
+                    <h4 class="font-bold text-gray-900 mb-2">Cinta Habaib</h4>
+                    <p class="text-sm text-gray-500">Menghormati dan mencintai dzuriyat Rasulullah.</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 shadow-sm text-center col-span-2">
+                    <i data-lucide="book-text" class="h-10 w-10 mx-auto text-brand-DEFAULT mb-3"></i>
+                    <h4 class="font-bold text-gray-900 mb-2">Kajian Turats</h4>
+                    <p class="text-sm text-gray-500">Mengkaji literatur klasik ulama Ahlussunnah wal Jamaah secara istiqamah.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kegiatan Rutin -->
+    <section id="kegiatan" class="py-20 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h3 class="text-3xl font-bold text-brand-dark mb-4">Kegiatan Rutin</h3>
+                <p class="text-gray-600 max-w-2xl mx-auto">Kami menyelenggarakan pengajian kitab-kitab para ulama Ahlussunnah wal Jamaah secara rutin, terbuka untuk jamaah umum.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Kamis -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                    <div class="h-2 bg-brand-DEFAULT"></div>
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-2xl font-bold text-gray-900">Kamis Malam</h4>
+                            <span class="p-2 bg-brand-light rounded-full text-brand-DEFAULT">
+                                <i data-lucide="moon"></i>
+                            </span>
+                        </div>
+                        <h5 class="font-semibold text-brand-dark mb-2">Kajian Kitab Kuning</h5>
+                        <p class="text-gray-600 text-sm mb-6">Mengkaji literatur klasik mengenai aqidah dan fiqih keseharian bersama asatidz majelis.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i data-lucide="clock" class="h-4 w-4 mr-2"></i> Ba'da Isya'
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jumat -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                    <div class="h-2 bg-brand-accent"></div>
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-2xl font-bold text-gray-900">Jumat Malam</h4>
+                            <span class="p-2 bg-brand-light rounded-full text-brand-DEFAULT">
+                                <i data-lucide="book-open-check"></i>
+                            </span>
+                        </div>
+                        <h5 class="font-semibold text-brand-dark mb-2">Pembacaan Maulid</h5>
+                        <p class="text-gray-600 text-sm mb-6">Pembacaan maulid serta kajian kitab ulama Ahlussunnah wal Jamaah mengenai tasawuf.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i data-lucide="clock" class="h-4 w-4 mr-2"></i> Ba'da Isya'
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sabtu -->
+                <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
+                    <div class="h-2 bg-brand-DEFAULT"></div>
+                    <div class="p-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-2xl font-bold text-gray-900">Sabtu Malam</h4>
+                            <span class="p-2 bg-brand-light rounded-full text-brand-DEFAULT">
+                                <i data-lucide="graduation-cap"></i>
+                            </span>
+                        </div>
+                        <h5 class="font-semibold text-brand-dark mb-2">Kajian Akhlakul Karimah</h5>
+                        <p class="text-gray-600 text-sm mb-6">Pembahasan kitab-kitab adab dan akhlakul karimah untuk membentuk pribadi muslim yang ideal.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i data-lucide="clock" class="h-4 w-4 mr-2"></i> Ba'da Isya'
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-gray-300 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <img class="h-12 w-12 mr-4 bg-white rounded-full p-1" src="favicon.svg" alt="Logo Jagad Shalawat">
+                    <div>
+                        <h2 class="text-white text-xl font-bold">Jagad Shalawat</h2>
+                        <p class="text-sm">Berkhidmat untuk umat</p>
+                    </div>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="https://www.instagram.com/jagadshalawat" target="_blank" class="hover:text-white"><i data-lucide="instagram"></i></a>
+                    <a href="https://wa.me/6285608691956" target="_blank" class="hover:text-white"><i data-lucide="phone"></i></a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm flex flex-col md:flex-row justify-between">
+                <p>&copy; 2026 Majelis Jagad Shalawat. Malang, Indonesia.</p>
+                <p class="mt-2 md:mt-0">Dibina oleh Ust. Bayu</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Countdown Timer
+        function updateCountdown() {
+            const targetDate = new Date("2026-08-30T08:00:00+07:00").getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const countdownElement = document.getElementById("countdown");
+
+            if (distance < 0) {
+                countdownElement.innerHTML = "Acara Sedang Berlangsung!";
+                countdownElement.classList.replace('bg-red-100', 'bg-green-100');
+                countdownElement.classList.replace('text-red-800', 'text-green-800');
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownElement.innerHTML = `Tinggal ${days} Hari ${hours} Jam ${minutes} Menit ${seconds} Detik!`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
