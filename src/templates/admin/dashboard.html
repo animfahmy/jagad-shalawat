@@ -1,0 +1,63 @@
+{% extends "admin/layout.html" %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block admin_head %}
+<style>
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+    .stat-card { background: #fff; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid var(--border); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+    .stat-title { color: #6b7280; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem; text-transform: uppercase; }
+    .stat-value { font-size: 2rem; font-weight: 700; color: var(--text); }
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-title">Total Posts</div>
+        <div class="stat-value">{{ stats.total_posts | default(value=0) }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-title">Drafts</div>
+        <div class="stat-value">{{ stats.draft_posts | default(value=0) }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-title">Pending Comments</div>
+        <div class="stat-value">{{ stats.pending_comments | default(value=0) }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-title">Total Views</div>
+        <div class="stat-value">{{ stats.total_views | default(value=0) }}</div>
+    </div>
+</div>
+
+<div class="card" style="margin-bottom: 2rem;">
+    <div class="card-header">Recent Posts</div>
+    <div class="card-body" style="padding: 0;">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in recent_posts %}
+                <tr>
+                    <td><a href="/blog/admin/posts/{{ post.id }}/edit">{{ post.title }}</a></td>
+                    <td>
+                        {% if post.status == "published" %}
+                        <span class="badge badge-success">Published</span>
+                        {% else %}
+                        <span class="badge badge-gray">Draft</span>
+                        {% endif %}
+                    </td>
+                    <td>{{ post.created_at | date(format="%Y-%m-%d") }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

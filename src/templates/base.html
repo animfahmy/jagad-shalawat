@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <meta name="description" content="{{ page_description }}">
+    <meta name="robots" content="index, follow">
+    
+    {% if canonical_url %}<link rel="canonical" href="{{ canonical_url | safe }}">{% endif %}
+    {% if og_tags %}{{ og_tags | safe }}{% endif %}
+    {% if hreflang_tags %}{{ hreflang_tags | safe }}{% endif %}
+    
+    <link rel="alternate" type="application/rss+xml" title="Blog Tagih Otomatis" href="{{ base_url | safe }}/blog/feed.xml">
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://www.gravatar.com">
+    
+    <!-- Inline critical CSS for fastest paint -->
+    <style>
+        :root{--primary:#0d9488;--primary-dark:#0f766e;--bg:#ffffff;--text:#1f2937;--text-light:#6b7280;--border:#e5e7eb;--bg-gray:#f9fafb;--danger:#dc2626;}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;color:var(--text);line-height:1.7;background:var(--bg)}
+        a{color:var(--primary);text-decoration:none;transition:color 0.2s}
+        a:hover{color:var(--primary-dark);text-decoration:underline}
+        img{max-width:100%;height:auto;display:block}
+        .container{max-width:1024px;margin:0 auto;padding:0 1rem}
+        
+        /* Header */
+        .site-header{background:var(--bg);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+        .nav-container{display:flex;justify-content:space-between;align-items:center;height:4rem}
+        .logo{font-size:1.25rem;color:var(--text);text-decoration:none}
+        .logo:hover{text-decoration:none;color:var(--primary)}
+        .nav-links{display:flex;gap:1.5rem;align-items:center}
+        .nav-links a{color:var(--text);font-weight:500}
+        .nav-links a:hover{color:var(--primary)}
+        .btn-cta{background:var(--primary);color:#fff!important;padding:0.5rem 1rem;border-radius:0.375rem;font-weight:600}
+        .btn-cta:hover{background:var(--primary-dark);text-decoration:none}
+        
+        /* Main Layout */
+        main{min-height:calc(100vh - 4rem - 15rem);padding:3rem 0}
+        
+        /* Footer */
+        .site-footer{background:var(--bg-gray);border-top:1px solid var(--border);padding:4rem 0 2rem}
+        .footer-content{display:grid;grid-template-columns:1fr;gap:2rem;margin-bottom:3rem}
+        @media (min-width:768px){.footer-content{grid-template-columns:2fr 1fr 1fr}}
+        .footer-brand p{color:var(--text-light);margin-top:0.5rem}
+        .footer-links h4{margin-bottom:1rem;color:var(--text)}
+        .footer-links a{display:block;color:var(--text-light);margin-bottom:0.5rem}
+        .footer-links a:hover{color:var(--primary)}
+        .footer-bottom{text-align:center;color:var(--text-light);padding-top:2rem;border-top:1px solid var(--border)}
+    </style>
+    
+    <!-- Full CSS (non-blocking) -->
+    <link rel="stylesheet" href="/blog/static/css/blog.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="/blog/static/css/blog.css"></noscript>
+    
+    {% if json_ld %}{{ json_ld | safe }}{% endif %}
+    {% if breadcrumb_ld %}{{ breadcrumb_ld | safe }}{% endif %}
+    
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <header class="site-header">
+        <nav class="container nav-container">
+            <a href="{{ base_url | safe }}" class="logo" aria-label="Tagih Otomatis">
+                <strong>Tagih Otomatis</strong>
+            </a>
+            <div class="nav-links">
+                <a href="/blog">Blog</a>
+                {% if lang == "id" %}
+                <a href="{% if alternate_lang_url %}{{ alternate_lang_url }}{% else %}/blog/en{% endif %}" title="English version"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="1.2em" height="1.2em" style="vertical-align:-0.15em; border:1px solid #ccc; border-radius:2px; margin-right:0.25rem"><clipPath id="t"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#t)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></svg> EN</a>
+                {% else %}
+                <a href="{% if alternate_lang_url %}{{ alternate_lang_url }}{% else %}/blog{% endif %}" title="Versi Indonesia"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3 2" width="1.2em" height="1.2em" style="vertical-align:-0.15em; border:1px solid #ccc; border-radius:2px; margin-right:0.25rem"><rect width="3" height="1" fill="#ce1126"/><rect width="3" height="1" y="1" fill="#fff"/></svg> ID</a>
+                {% endif %}
+                <a href="{{ base_url | safe }}" class="btn-cta">{% if lang == "en" %}Try Free{% else %}Coba Gratis{% endif %}</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <strong>Tagih Otomatis</strong>
+                <p>{% if lang == "en" %}Automated billing system for organizations.{% else %}Sistem penagihan otomatis untuk organisasi.{% endif %}</p>
+            </div>
+            <div class="footer-links">
+                <h4>Blog</h4>
+                <a href="/blog{% if lang == 'en' %}/en{% endif %}">{% if lang == "en" %}All Articles{% else %}Semua Artikel{% endif %}</a>
+                <a href="/blog{% if lang == 'en' %}/en{% endif %}/kategori/teknologi-pembayaran">{% if lang == "en" %}Payment Tech{% else %}Teknologi Pembayaran{% endif %}</a>
+                <a href="/blog{% if lang == 'en' %}/en{% endif %}/kategori/pembayaran-syariah">{% if lang == "en" %}Sharia Payments{% else %}Pembayaran Syariah{% endif %}</a>
+                <a href="/blog{% if lang == 'en' %}/en{% endif %}/kategori/pembayaran-digital">{% if lang == "en" %}Digital Payments{% else %}Pembayaran Digital{% endif %}</a>
+            </div>
+            <div class="footer-links">
+                <h4>{% if lang == "en" %}Links{% else %}Tautan{% endif %}</h4>
+                <a href="{{ base_url | safe }}">{% if lang == "en" %}Home{% else %}Beranda{% endif %}</a>
+                <a href="/blog/feed.xml">RSS Feed</a>
+                <a href="/blog/sitemap.xml">Sitemap</a>
+            </div>
+        </div>
+        <div class="container footer-bottom">
+            <p>&copy; {{ now() | date(format="%Y") }} Tagih Otomatis. {% if lang == "en" %}All rights reserved.{% else %}Hak cipta dilindungi.{% endif %}</p>
+        </div>
+    {% block scripts %}{% endblock %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var lang = '{{ lang | default(value="id") }}';
+            var isId = (lang !== 'en');
+            var locale = isId ? 'id-ID' : 'en-US';
+
+            function formatLocalTimes() {
+                document.querySelectorAll('time[datetime]').forEach(function(el) {
+                    var dtStr = el.getAttribute('datetime');
+                    if (!dtStr) return;
+                    var d = new Date(dtStr);
+                    if (isNaN(d.getTime())) return;
+
+                    var fullTitle = d.toLocaleString(locale, {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+                    el.setAttribute('title', fullTitle);
+
+                    if (el.classList.contains('comment-date')) {
+                        var now = new Date();
+                        var diffSec = Math.floor((now - d) / 1000);
+                        if (diffSec < 0) diffSec = 0;
+                        var diffMin = Math.floor(diffSec / 60);
+                        var diffHour = Math.floor(diffMin / 60);
+                        var diffDay = Math.floor(diffHour / 24);
+
+                        if (diffSec < 45) {
+                            el.textContent = isId ? 'Baru saja' : 'Just now';
+                        } else if (diffMin < 60) {
+                            el.textContent = isId ? diffMin + ' menit yang lalu' : diffMin + ' min' + (diffMin > 1 ? 's' : '') + ' ago';
+                        } else if (diffHour < 24) {
+                            el.textContent = isId ? diffHour + ' jam yang lalu' : diffHour + ' hour' + (diffHour > 1 ? 's' : '') + ' ago';
+                        } else if (diffDay < 7) {
+                            el.textContent = isId ? diffDay + ' hari yang lalu' : diffDay + ' day' + (diffDay > 1 ? 's' : '') + ' ago';
+                        } else {
+                            el.textContent = d.toLocaleString(locale, {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                        }
+                    } else if (el.classList.contains('local-date')) {
+                        el.textContent = d.toLocaleDateString(locale, {
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric'
+                        });
+                    }
+                });
+            }
+
+            formatLocalTimes();
+        });
+    </script>
+</body>
+</html>

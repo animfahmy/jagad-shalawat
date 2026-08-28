@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Tagih Otomatis</title>
+    <style>
+        :root { --primary: #0d9488; --primary-dark: #0f766e; --sidebar-bg: #1f2937; --sidebar-hover: #374151; --bg: #f3f4f6; --text: #111827; --border: #e5e7eb; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 250px; background: var(--sidebar-bg); color: #fff; display: flex; flex-direction: column; flex-shrink: 0; }
+        .sidebar-brand { padding: 1.5rem; font-size: 1.25rem; font-weight: bold; border-bottom: 1px solid #374151; }
+        .sidebar-nav { padding: 1rem 0; flex-grow: 1; }
+        .nav-item { display: block; padding: 0.75rem 1.5rem; color: #d1d5db; text-decoration: none; transition: background 0.2s, color 0.2s; }
+        .nav-item:hover, .nav-item.active { background: var(--sidebar-hover); color: #fff; }
+        .sidebar-footer { padding: 1rem; border-top: 1px solid #374151; }
+        .btn-logout { display: block; text-align: center; background: #ef4444; color: #fff; text-decoration: none; padding: 0.5rem; border-radius: 0.375rem; }
+        .btn-logout:hover { background: #dc2626; }
+        
+        /* Main Content */
+        .main-wrapper { flex-grow: 1; display: flex; flex-direction: column; min-width: 0; }
+        
+        /* Topbar */
+        .topbar { height: 4rem; background: #fff; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 2rem; }
+        .topbar-title { font-weight: 600; font-size: 1.25rem; }
+        .admin-profile { display: flex; align-items: center; gap: 0.75rem; }
+        
+        /* Content Area */
+        .content-area { padding: 2rem; overflow-y: auto; flex-grow: 1; }
+        
+        /* Utilities */
+        .card { background: #fff; border-radius: 0.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid var(--border); overflow: hidden; }
+        .card-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+        .card-body { padding: 1.5rem; }
+        
+        .btn { display: inline-block; padding: 0.5rem 1rem; border-radius: 0.375rem; font-weight: 500; text-decoration: none; cursor: pointer; border: 1px solid transparent; text-align: center; }
+        .btn-primary { background: var(--primary); color: #fff; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-danger { background: #ef4444; color: #fff; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-outline { border-color: var(--border); background: #fff; color: var(--text); }
+        .btn-outline:hover { background: var(--bg); }
+        
+        .table { width: 100%; border-collapse: collapse; }
+        .table th, .table td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        .table th { background: #f9fafb; font-weight: 600; color: #4b5563; font-size: 0.875rem; text-transform: uppercase; }
+        
+        .badge { padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+        .badge-success { background: #d1fae5; color: #065f46; }
+        .badge-warning { background: #fef3c7; color: #92400e; }
+        .badge-gray { background: #e5e7eb; color: #374151; }
+        
+        /* Flash messages */
+        .alert { padding: 1rem; border-radius: 0.375rem; margin-bottom: 1.5rem; }
+        .alert-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .alert-error { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    </style>
+    {% block admin_head %}{% endblock %}
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-brand">Tagih Otomatis</div>
+        <nav class="sidebar-nav">
+            <a href="/blog/admin" class="nav-item">Dashboard</a>
+            <a href="/blog/admin/posts" class="nav-item">Posts</a>
+            <a href="/blog/admin/comments" class="nav-item">Comments</a>
+            <a href="/blog/admin/blocked-words" class="nav-item">Blocked Words</a>
+        </nav>
+        <div class="sidebar-footer">
+            <form action="/blog/admin/cache/clear" method="POST" style="margin-bottom: 0.5rem;">
+                <button type="submit" class="btn btn-outline" style="width: 100%; font-size: 0.875rem;">Clear Cache</button>
+            </form>
+            <a href="/blog/admin/logout" class="btn-logout">Logout</a>
+        </div>
+    </aside>
+    
+    <div class="main-wrapper">
+        <header class="topbar">
+            <div class="topbar-title">{% block page_title %}Admin Dashboard{% endblock %}</div>
+            <div class="admin-profile">
+                <span>Admin</span>
+            </div>
+        </header>
+        
+        <main class="content-area">
+            {% if flash_message %}
+            <div class="alert alert-{{ flash_type | default(value='success') }}">
+                {{ flash_message }}
+            </div>
+            {% endif %}
+            
+            {% block admin_content %}{% endblock %}
+        </main>
+    </div>
+    
+    {% block admin_scripts %}{% endblock %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('time.local-datetime[datetime]').forEach(function(el) {
+                var dtStr = el.getAttribute('datetime');
+                if (!dtStr) return;
+                var d = new Date(dtStr);
+                if (isNaN(d.getTime())) return;
+                el.textContent = d.toLocaleString('id-ID', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                el.setAttribute('title', d.toString());
+            });
+        });
+    </script>
+</body>
+</html>

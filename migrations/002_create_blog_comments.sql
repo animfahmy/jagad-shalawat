@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS blog_comments (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    post_id BIGINT UNSIGNED NOT NULL,
+    parent_id BIGINT UNSIGNED NULL,
+    author_name VARCHAR(255) NOT NULL,
+    author_email VARCHAR(255),
+    author_avatar_url VARCHAR(500),
+    oauth_provider ENUM('google','github') NULL,
+    oauth_id VARCHAR(255) NULL,
+    content TEXT NOT NULL,
+    status ENUM('pending','approved','rejected','spam') DEFAULT 'pending',
+    rejection_reason VARCHAR(255),
+    ip_address VARCHAR(45),
+    user_agent VARCHAR(500),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (post_id) REFERENCES blog_posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (parent_id) REFERENCES blog_comments(id) ON DELETE SET NULL,
+    INDEX idx_post_status (post_id, status, created_at),
+    INDEX idx_oauth (oauth_provider, oauth_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

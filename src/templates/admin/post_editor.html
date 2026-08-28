@@ -1,0 +1,236 @@
+{% extends "admin/layout.html" %}
+
+{% block page_title %}{% if post.id %}Edit Post{% else %}New Post{% endif %}{% endblock %}
+
+{% block admin_head %}
+<style>
+    .editor-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+    @media (min-width: 1024px) { .editor-layout { grid-template-columns: 2fr 1fr; } }
+    
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
+    .form-control { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.375rem; font-family: inherit; font-size: 1rem; }
+    textarea.form-control { resize: vertical; min-height: 100px; }
+    
+    .editor-textarea { min-height: 400px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 0.875rem; line-height: 1.5; }
+    
+    .help-text { font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem; }
+    
+    .action-bar { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    
+    /* Tabs */
+    .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+    .tab { padding: 0.75rem 1.5rem; cursor: pointer; border-bottom: 2px solid transparent; }
+    .tab.active { border-bottom-color: var(--primary); font-weight: 600; color: var(--primary); }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+</style>
+<script>
+    function switchTab(lang) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        document.querySelector('.tab-' + lang).classList.add('active');
+        document.getElementById('content-' + lang).classList.add('active');
+    }
+    
+    function autoGenerateSlug(sourceId, targetId) {
+        const title = document.getElementById(sourceId).value;
+        const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        document.getElementById(targetId).value = slug;
+    }
+</script>
+{% endblock %}
+
+{% block admin_content %}
+{% set p_id = post.id | default(value='') %}
+{% set p_title = post.title | default(value='') %}
+{% set p_slug = post.slug | default(value='') %}
+{% set p_excerpt = post.excerpt | default(value='') %}
+{% set p_content_markdown = post.content_markdown | default(value='') %}
+{% set p_title_en = post.title_en | default(value='') %}
+{% set p_slug_en = post.slug_en | default(value='') %}
+{% set p_excerpt_en = post.excerpt_en | default(value='') %}
+{% set p_content_markdown_en = post.content_markdown_en | default(value='') %}
+{% set p_meta_description = post.meta_description | default(value='') %}
+{% set p_meta_description_en = post.meta_description_en | default(value='') %}
+{% set p_category = post.category | default(value='') %}
+{% set p_tags = post.tags | default(value='') %}
+{% set p_status = post.status | default(value='draft') %}
+{% set p_featured_image = post.featured_image | default(value='') %}
+{% set p_source_url = post.source_url | default(value='') %}
+{% set p_source_name = post.source_name | default(value='') %}
+
+<form action="{% if p_id %}/blog/admin/posts/{{ p_id }}{% else %}/blog/admin/posts{% endif %}" method="POST">
+    <div class="editor-layout">
+        <!-- Left Column: Content Editor -->
+        <div>
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-header">Post Content</div>
+                <div class="card-body">
+                    <div class="tabs">
+                        <div class="tab tab-id active" onclick="switchTab('id')">Indonesian</div>
+                        <div class="tab tab-en" onclick="switchTab('en')">English</div>
+                    </div>
+                    
+                    <!-- ID Content -->
+                    <div id="content-id" class="tab-content active">
+                        <div class="form-group">
+                            <label for="title">Title (ID)</label>
+                            <input type="text" id="title" name="title" class="form-control" value="{{ p_title }}" required onchange="if(!document.getElementById('slug').value) autoGenerateSlug('title', 'slug')">
+                        </div>
+                        <div class="form-group">
+                            <label for="slug">Slug (ID)</label>
+                            <input type="text" id="slug" name="slug" class="form-control" value="{{ p_slug }}" required>
+                            <div class="help-text">URL-friendly version of the title. Must be unique.</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="excerpt">Excerpt (ID)</label>
+                            <textarea id="excerpt" name="excerpt" class="form-control" rows="3">{{ p_excerpt }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="content_markdown">Content (ID - Markdown)</label>
+                            <textarea id="content_markdown" name="content_markdown" class="form-control editor-textarea" required>{{ p_content_markdown }}</textarea>
+                            <div class="help-text">Use Markdown. Use &lt;!-- more --&gt; to split if needed.</div>
+                        </div>
+                    </div>
+                    
+                    <!-- EN Content -->
+                    <div id="content-en" class="tab-content">
+                        <div class="form-group">
+                            <label for="title_en">Title (EN)</label>
+                            <input type="text" id="title_en" name="title_en" class="form-control" value="{{ p_title_en }}" onchange="if(!document.getElementById('slug_en').value) autoGenerateSlug('title_en', 'slug_en')">
+                        </div>
+                        <div class="form-group">
+                            <label for="slug_en">Slug (EN)</label>
+                            <input type="text" id="slug_en" name="slug_en" class="form-control" value="{{ p_slug_en }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="excerpt_en">Excerpt (EN)</label>
+                            <textarea id="excerpt_en" name="excerpt_en" class="form-control" rows="3">{{ p_excerpt_en }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="content_markdown_en">Content (EN - Markdown)</label>
+                            <textarea id="content_markdown_en" name="content_markdown_en" class="form-control editor-textarea">{{ p_content_markdown_en }}</textarea>
+                        </div>
+                        <div style="text-align: right; margin-top: 1rem;">
+                            <button type="button" class="btn btn-outline">Auto-Translate from ID</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">SEO &amp; Meta</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="meta_description">Meta Description (ID)</label>
+                        <textarea id="meta_description" name="meta_description" class="form-control" rows="2" placeholder="Deskripsi untuk search engine (Bahasa Indonesia)...">{{ p_meta_description }}</textarea>
+                        <div class="help-text">Kosongkan jika ingin otomatis mengambil dari Excerpt (ID). Maksimal ~160 karakter.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="meta_description_en">Meta Description (EN)</label>
+                        <textarea id="meta_description_en" name="meta_description_en" class="form-control" rows="2" placeholder="Search engine description (English)...">{{ p_meta_description_en }}</textarea>
+                        <div class="help-text">Leave blank to automatically use Excerpt (EN). Max ~160 characters.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right Column: Meta & Settings -->
+        <div>
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-header">Publish Settings</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" class="form-control" required>
+                            <option value="">Select a category</option>
+                            <option value="Teknologi Pembayaran" {% if p_category == 'Teknologi Pembayaran' %}selected{% endif %}>Teknologi Pembayaran</option>
+                            <option value="Pembayaran Syariah" {% if p_category == 'Pembayaran Syariah' %}selected{% endif %}>Pembayaran Syariah</option>
+                            <option value="Pembayaran Digital" {% if p_category == 'Pembayaran Digital' %}selected{% endif %}>Pembayaran Digital</option>
+                            <option value="Berita Bisnis" {% if p_category == 'Berita Bisnis' %}selected{% endif %}>Berita Bisnis</option>
+                            <option value="Tips & Trik" {% if p_category == 'Tips & Trik' %}selected{% endif %}>Tips &amp; Trik</option>
+                            <option value="Agenda" {% if p_category == 'Agenda' %}selected{% endif %}>Agenda</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">Tags</label>
+                        <input type="text" id="tags" name="tags" class="form-control" value="{% if post.tags %}{% for t in post.tags %}{{ t }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}{{ p_tags }}{% endif %}" placeholder="e.g. tagihan, invoice, qr">
+                        <div class="help-text">Comma-separated tags</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" name="status" class="form-control">
+                            <option value="draft" {% if p_status == 'draft' %}selected{% endif %}>Draft</option>
+                            <option value="published" {% if p_status == 'published' %}selected{% endif %}>Published</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <div class="card-header">Media</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Featured Image</label>
+                        {% if p_featured_image %}
+                        <div style="margin-bottom: 1rem;">
+                            <img src="{{ p_featured_image }}" alt="Featured" style="width: 100%; border-radius: 0.375rem; border: 1px solid var(--border);">
+                        </div>
+                        {% endif %}
+                        <input type="text" name="featured_image" id="featured_image" class="form-control" value="{{ p_featured_image }}" placeholder="URL (e.g. /blog/static/uploads/image.jpg)">
+                        <div style="margin-top: 0.5rem;">
+                            <input type="file" id="image_upload" accept="image/*" style="font-size: 0.875rem;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">Referensi &amp; Sumber Rujukan</div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="sources">Daftar URL Sumber (1 per baris)</label>
+                        <textarea id="sources" name="sources" class="form-control" rows="4" placeholder="https://bi.go.id/...&#10;OJK | https://ojk.go.id/...&#10;https://kompas.com/...">{% if post.sources %}{% for s in post.sources %}{% if s.title and s.url %}{{ s.title }} | {{ s.url }}{% elif s.url %}{{ s.url }}{% else %}{{ s }}{% endif %}
+{% endfor %}{% elif p_source_url %}{% if p_source_name %}{{ p_source_name }} | {% endif %}{{ p_source_url }}{% endif %}</textarea>
+                        <div class="help-text">Masukkan URL sumber referensi (1 URL per baris). Format opsional: <code>Nama Sumber | https://url...</code></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-bar">
+                <a href="/blog/admin/posts" class="btn btn-outline">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save Post</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    // Simple file upload handler
+    document.getElementById('image_upload').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        try {
+            const res = await fetch('/blog/admin/media/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await res.json();
+            if (data.url) {
+                document.getElementById('featured_image').value = data.url;
+                alert('Upload successful!');
+            } else {
+                alert('Upload failed: ' + (data.error || 'Unknown error'));
+            }
+        } catch (err) {
+            alert('Upload failed: ' + err.message);
+        }
+    });
+</script>
+{% endblock %}

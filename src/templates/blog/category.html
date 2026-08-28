@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block head %}
+<style>
+    .category-header { text-align: center; margin-bottom: 3rem; padding: 2rem 0; background: var(--bg-gray); border-radius: 0.75rem; }
+    .category-header h1 { font-size: 2.5rem; color: var(--text); margin-bottom: 0.5rem; }
+    .category-header p { font-size: 1.125rem; color: var(--text-light); }
+    
+    .blog-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+    @media (min-width: 768px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .blog-grid { grid-template-columns: repeat(3, 1fr); } }
+    
+    .post-card { display: flex; flex-direction: column; background: #fff; border-radius: 0.75rem; overflow: hidden; border: 1px solid var(--border); transition: transform 0.2s, box-shadow 0.2s; }
+    .post-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+    
+    .post-image { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: var(--bg-gray); }
+    .post-content { padding: 1.5rem; display: flex; flex-direction: column; flex-grow: 1; }
+    
+    .post-category { font-size: 0.875rem; font-weight: 600; color: var(--primary); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .post-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.4; }
+    .post-title a { color: var(--text); text-decoration: none; }
+    .post-title a:hover { color: var(--primary); }
+    
+    .post-excerpt { color: var(--text-light); margin-bottom: 1.5rem; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    
+    .post-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; font-size: 0.875rem; color: var(--text-light); border-top: 1px solid var(--border); padding-top: 1rem; }
+    .post-author-date { display: flex; flex-direction: column; }
+    
+    .pagination { display: flex; justify-content: center; gap: 1rem; margin-top: 4rem; }
+    .btn-page { padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 0.375rem; color: var(--text); font-weight: 500; background: #fff; }
+    .btn-page:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
+    .btn-page[disabled] { opacity: 0.5; pointer-events: none; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="category-header">
+        <h1>{{ category_name | default(value=category_title | default(value='Kategori')) }}</h1>
+        <p>{% if lang == 'en' %}Showing all articles in this category.{% else %}Menampilkan semua artikel dalam kategori ini.{% endif %}</p>
+    </header>
+
+    {% if posts | length > 0 %}
+    <div class="blog-grid">
+        {% for post in posts %}
+        <article class="post-card">
+            <a href="{% if lang == 'en' and post.slug_en %}/blog/en/{{ post.slug_en }}{% else %}/blog/{{ post.slug }}{% endif %}" aria-label="{% if lang == 'en' %}Read {{ post.title_en | default(value=post.title) }}{% else %}Baca {{ post.title }}{% endif %}">
+                {% if post.featured_image %}
+                <img src="{{ post.featured_image }}" alt="{% if lang == 'en' %}{{ post.title_en | default(value=post.title) }}{% else %}{{ post.title }}{% endif %}" class="post-image" loading="lazy">
+                {% else %}
+                <div class="post-image"></div>
+                {% endif %}
+            </a>
+            <div class="post-content">
+                <span class="post-category">{{ post.category }}</span>
+                <h2 class="post-title"><a href="{% if lang == 'en' and post.slug_en %}/blog/en/{{ post.slug_en }}{% else %}/blog/{{ post.slug }}{% endif %}">{% if lang == 'en' %}{{ post.title_en | default(value=post.title) }}{% else %}{{ post.title }}{% endif %}</a></h2>
+                <p class="post-excerpt">{% if lang == 'en' %}{{ post.excerpt_en | default(value=post.excerpt) }}{% else %}{{ post.excerpt }}{% endif %}</p>
+                
+                <footer class="post-meta">
+                    <div class="post-author-date">
+                        <strong>{{ post.author_name }}</strong>
+                        <time class="local-date" datetime="{{ post.published_at | date(format='%Y-%m-%dT%H:%M:%SZ') }}">
+                            {{ post.published_at | date(format="%d %b %Y") }}
+                        </time>
+                    </div>
+                    <div>
+                        <span>{{ post.reading_time_minutes }} {% if lang == 'en' %}min{% else %}mnt{% endif %}</span> • <span>{{ post.view_count }} {% if lang == 'en' %}views{% else %}view{% endif %}</span>
+                    </div>
+                </footer>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+
+    {% if total_pages > 1 %}
+    <nav class="pagination" aria-label="Navigasi halaman">
+        {% if current_page > 1 %}
+        <a href="?{% if lang == 'en' %}page{% else %}halaman{% endif %}={{ current_page - 1 }}" class="btn-page">{% if lang == 'en' %}Previous{% else %}Sebelumnya{% endif %}</a>
+        {% else %}
+        <span class="btn-page" disabled>{% if lang == 'en' %}Previous{% else %}Sebelumnya{% endif %}</span>
+        {% endif %}
+        
+        <span class="btn-page">{% if lang == 'en' %}Page {{ current_page }} of {{ total_pages }}{% else %}Hal {{ current_page }} dari {{ total_pages }}{% endif %}</span>
+        
+        {% if current_page < total_pages %}
+        <a href="?{% if lang == 'en' %}page{% else %}halaman{% endif %}={{ current_page + 1 }}" class="btn-page">{% if lang == 'en' %}Next{% else %}Selanjutnya{% endif %}</a>
+        {% else %}
+        <span class="btn-page" disabled>{% if lang == 'en' %}Next{% else %}Selanjutnya{% endif %}</span>
+        {% endif %}
+    </nav>
+    {% endif %}
+    
+    {% else %}
+    <div style="text-align: center; padding: 4rem 0;">
+        <p>{% if lang == 'en' %}No articles found in this category.{% else %}Belum ada artikel di kategori ini.{% endif %}</p>
+        <a href="{% if lang == 'en' %}/blog/en{% else %}/blog{% endif %}" class="btn-page" style="display: inline-block; margin-top: 1rem;">{% if lang == 'en' %}Back to Blog{% else %}Kembali ke Blog{% endif %}</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

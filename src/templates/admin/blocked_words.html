@@ -1,0 +1,79 @@
+{% extends "admin/layout.html" %}
+
+{% block page_title %}Blocked Words Configuration{% endblock %}
+
+{% block admin_content %}
+<div style="display: grid; grid-template-columns: 1fr; gap: 2rem;">
+        <!-- Simplified media query for inline grid layout handling in larger screens via custom CSS above if needed, here just using basic flex -->
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+    
+    <div style="flex: 1; min-width: 300px;">
+        <div class="card">
+            <div class="card-header">Add New Blocked Word</div>
+            <div class="card-body">
+                <form action="/blog/admin/blocked-words/add" method="POST">
+                    <div style="margin-bottom: 1rem;">
+                        <label for="word" style="display: block; font-weight: 500; margin-bottom: 0.5rem;">Word or Phrase</label>
+                        <input type="text" id="word" name="word" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 0.25rem;" required>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label for="category" style="display: block; font-weight: 500; margin-bottom: 0.5rem;">Category</label>
+                        <select id="category" name="category" class="form-control" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border); border-radius: 0.25rem;" required>
+                            <option value="gambling">Gambling / Judi</option>
+                            <option value="pornography">Pornography / Porno</option>
+                            <option value="sara">SARA / Hate Speech</option>
+                            <option value="spam">Spam / Promosi</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Add Word</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="alert alert-warning" style="margin-top: 2rem;">
+            <strong>Note:</strong> Comments containing these words will be automatically rejected or flagged for manual review depending on the system configuration.
+        </div>
+    </div>
+    
+    <div style="flex: 2; min-width: 400px;">
+        <div class="card">
+            <div class="card-header">Blocked Words List</div>
+            <div class="card-body" style="padding: 0; overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Word</th>
+                            <th>Category</th>
+                            <th style="width: 100px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for word in blocked_words %}
+                        <tr>
+                            <td><strong>{{ word.word }}</strong></td>
+                            <td>
+                                <span class="badge badge-gray" style="text-transform: capitalize;">{{ word.category }}</span>
+                            </td>
+                            <td>
+                                <form action="/blog/admin/blocked-words/delete/{{ word.id }}" method="POST" onsubmit="return confirm('Are you sure you want to remove this word from the block list?');">
+                                    <button type="submit" class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        
+                        {% if blocked_words | length == 0 %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; padding: 2rem;">No blocked words defined.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    </div> <!-- end flex -->
+</div>
+{% endblock %}
