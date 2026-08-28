@@ -3,6 +3,13 @@
 {% block head %}
 <style>
     /* Blog Index Styles */
+    @font-face {
+        font-family: 'UthmanTaha';
+        src: url('/blog/static/fonts/KFGQPC Uthman Taha Naskh Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+    .arabic-text { font-family: 'UthmanTaha', serif; font-size: 1.5rem; line-height: 1.8; margin-top: 1rem; }
     .blog-header { text-align: center; margin-bottom: 3rem; }
     .blog-header h1 { font-size: 2.5rem; color: var(--text); margin-bottom: 1rem; }
     .blog-header p { font-size: 1.25rem; color: var(--text-light); }
@@ -38,7 +45,7 @@
 <div class="container">
     <header class="blog-header">
         <h1>Jagad Shalawat Blog</h1>
-        <p>?????? ?? ???????? ???????? ????????? ???????? ????? ????? ???? ???? ?????.</p>
+        <p dir="rtl" lang="ar" class="arabic-text">مجموعة المقالات والأخبار وجدول أعمال مجلس تعليم وذكر جَاكَا د صَلَوَات.</p>
     </header>
 
     <div class="blog-grid">
