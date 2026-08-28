@@ -146,17 +146,16 @@
                         <label for="category">Category</label>
                         <select id="category" name="category" class="form-control" required>
                             <option value="">Select a category</option>
-                            <option value="Teknologi Pembayaran" {% if p_category == 'Teknologi Pembayaran' %}selected{% endif %}>Teknologi Pembayaran</option>
-                            <option value="Pembayaran Syariah" {% if p_category == 'Pembayaran Syariah' %}selected{% endif %}>Pembayaran Syariah</option>
-                            <option value="Pembayaran Digital" {% if p_category == 'Pembayaran Digital' %}selected{% endif %}>Pembayaran Digital</option>
-                            <option value="Berita Bisnis" {% if p_category == 'Berita Bisnis' %}selected{% endif %}>Berita Bisnis</option>
-                            <option value="Tips & Trik" {% if p_category == 'Tips & Trik' %}selected{% endif %}>Tips &amp; Trik</option>
+                            <option value="Kajian Rutin" {% if p_category == 'Kajian Rutin' %}selected{% endif %}>Kajian Rutin</option>
+                            <option value="Tausiyah" {% if p_category == 'Tausiyah' %}selected{% endif %}>Tausiyah</option>
+                            <option value="Berita Islami" {% if p_category == 'Berita Islami' %}selected{% endif %}>Berita Islami</option>
+                            <option value="Artikel" {% if p_category == 'Artikel' %}selected{% endif %}>Artikel</option>
                             <option value="Agenda" {% if p_category == 'Agenda' %}selected{% endif %}>Agenda</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="tags">Tags</label>
-                        <input type="text" id="tags" name="tags" class="form-control" value="{% if post.tags %}{% for t in post.tags %}{{ t }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}{{ p_tags }}{% endif %}" placeholder="e.g. tagihan, invoice, qr">
+                        <input type="text" id="tags" name="tags" class="form-control" value="{% if post.tags %}{% for t in post.tags %}{{ t }}{% if not loop.last %}, {% endif %}{% endfor %}{% else %}{{ p_tags }}{% endif %}" placeholder="e.g. pengajian, dzikir, majelis">
                         <div class="help-text">Comma-separated tags</div>
                     </div>
                     <div class="form-group">

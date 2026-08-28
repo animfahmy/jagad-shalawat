@@ -192,7 +192,7 @@ pub async fn github_callback(
     // Get user info
     let user_resp = client
         .get("https://api.github.com/user")
-        .header("User-Agent", "TagihOtomatisBlog")
+        .header("User-Agent", "JagadShalawatBlog")
         .bearer_auth(&token_data.access_token)
         .send()
         .await
@@ -210,7 +210,7 @@ pub async fn github_callback(
         // Fetch from emails endpoint
         let emails_resp = client
             .get("https://api.github.com/user/emails")
-            .header("User-Agent", "TagihOtomatisBlog")
+            .header("User-Agent", "JagadShalawatBlog")
             .bearer_auth(&token_data.access_token)
             .send()
             .await

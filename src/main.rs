@@ -70,7 +70,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         let session_mw = SessionMiddleware::builder(CookieSessionStore::default(), session_key.clone())
-            .cookie_name(String::from("tagih_blog_session"))
+            .cookie_name(String::from("jagad_shalawat_session"))
             .cookie_path(String::from("/"))
             .cookie_same_site(actix_web::cookie::SameSite::Lax)
             .cookie_secure(false)
