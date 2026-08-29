@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use crate::error::AppError;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -119,7 +120,7 @@ impl BlogComment {
     pub async fn find_by_post_nested(pool: &MySqlPool, post_id: u64) -> Result<Vec<CommentDisplay>, AppError> {
         let comments = Self::find_approved_by_post(pool, post_id).await?;
         
-        let mut display_comments: Vec<CommentDisplay> = comments.into_iter().map(|c| CommentDisplay {
+        let display_comments: Vec<CommentDisplay> = comments.into_iter().map(|c| CommentDisplay {
             id: c.id,
             author_name: c.author_name,
             author_avatar_url: c.author_avatar_url,
@@ -154,3 +155,4 @@ impl BlogComment {
         Ok(root_comments)
     }
 }
+

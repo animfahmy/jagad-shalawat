@@ -1,4 +1,4 @@
-use actix_web::{web, HttpResponse, Responder, get, post, delete};
+use actix_web::{web, HttpResponse, Responder};
 use actix_session::Session;
 use crate::AppState;
 use crate::error::AppError;
@@ -58,7 +58,7 @@ pub async fn create(
         .execute(&state.db)
         .await?;
     
-    let mut filter = state.content_filter.write().await;
+    let filter = state.content_filter.write().await;
     filter.reload(&state.db).await?;
 
     Ok(HttpResponse::Found()
@@ -80,7 +80,7 @@ pub async fn delete(
         .execute(&state.db)
         .await?;
         
-    let mut filter = state.content_filter.write().await;
+    let filter = state.content_filter.write().await;
     filter.reload(&state.db).await?;
 
     Ok(HttpResponse::Found()

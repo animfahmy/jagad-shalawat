@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use crate::models::post::BlogPost;
 
 pub fn generate_json_ld_article(post: &BlogPost, base_url: &str, lang: &str) -> String {
@@ -139,3 +140,4 @@ pub fn generate_hreflang_tags(slug_id: &str, slug_en: Option<&str>, base_url: &s
 pub fn generate_canonical(url: &str) -> String {
     format!(r#"<link rel="canonical" href="{}" />"#, url)
 }
+

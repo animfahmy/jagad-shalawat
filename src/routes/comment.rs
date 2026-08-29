@@ -4,7 +4,7 @@ use log::{info, warn};
 use md5::{Digest, Md5};
 
 use crate::error::AppError;
-use crate::models::comment::{BlogComment, CreateComment, CommentDisplay};
+use crate::models::comment::{BlogComment, CreateComment};
 use crate::services::content_filter::FilterResult;
 use crate::AppState;
 

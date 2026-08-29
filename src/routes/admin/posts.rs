@@ -1,4 +1,5 @@
-use actix_web::{web, HttpResponse, Responder, get, post, put, delete};
+#![allow(dead_code)]
+use actix_web::{web, HttpResponse, Responder};
 use actix_session::Session;
 use crate::AppState;
 use crate::error::AppError;
@@ -427,3 +428,4 @@ pub async fn translate(
 
     Ok(web::Json(serde_json::json!({ "success": true })))
 }
+

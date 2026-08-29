@@ -3,7 +3,7 @@
 // futures-util = "0.3"
 // urlencoding = "2"
 
-use actix_web::{web, Responder, post};
+use actix_web::{web, Responder};
 use actix_session::Session;
 use actix_multipart::Multipart;
 use futures_util::StreamExt;

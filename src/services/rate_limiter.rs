@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use crate::error::AppError;
 use redis::{aio::ConnectionManager, AsyncCommands};
 
@@ -39,3 +40,4 @@ impl RateLimiter {
         }
     }
 }
+

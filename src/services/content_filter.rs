@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use crate::error::AppError;
 use sqlx::MySqlPool;
 use std::sync::Arc;
@@ -106,3 +107,4 @@ impl ContentFilter {
         result
     }
 }
+

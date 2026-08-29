@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use crate::error::AppError;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -76,3 +77,4 @@ impl AdminUser {
         Ok(())
     }
 }
+
