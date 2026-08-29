@@ -154,3 +154,63 @@ pub async fn reset_password_submit(
         Err(AppError::BadRequest("Token tidak valid atau sudah kedaluwarsa.".into()))
     }
 }
+
+pub async fn change_password_page(
+    session: Session,
+    state: web::Data<AppState>
+) -> Result<impl Responder, AppError> {
+    crate::routes::admin::require_auth(&session)?;
+
+    let mut ctx = tera::Context::new();
+    let role = session.get::<String>("user_role").unwrap_or(None).unwrap_or_else(|| "admin".to_string());
+    ctx.insert("user_role", &role);
+    
+    let html = state.tera.render("admin/change_password.html", &ctx)
+        .map_err(|e| AppError::Template(e))?;
+    Ok(HttpResponse::Ok().content_type("text/html").body(html))
+}
+
+#[derive(Deserialize)]
+pub struct ChangePasswordForm {
+    pub new_password: String,
+    pub confirm_password: String,
+}
+
+pub async fn change_password_submit(
+    session: Session,
+    state: web::Data<AppState>,
+    form: web::Form<ChangePasswordForm>
+) -> Result<impl Responder, AppError> {
+    crate::routes::admin::require_auth(&session)?;
+    
+    let admin_id = session.get::<u64>("admin_id").map_err(|_| AppError::Unauthorized)?.ok_or(AppError::Unauthorized)?;
+    
+    if form.new_password != form.confirm_password {
+        let mut ctx = tera::Context::new();
+        let role = session.get::<String>("user_role").unwrap_or(None).unwrap_or_else(|| "admin".to_string());
+        ctx.insert("user_role", &role);
+        ctx.insert("flash_message", "Password baru dan konfirmasi tidak cocok.");
+        ctx.insert("flash_type", "error");
+        
+        let html = state.tera.render("admin/change_password.html", &ctx)?;
+        return Ok(HttpResponse::BadRequest().content_type("text/html").body(html));
+    }
+    
+    use argon2::{password_hash::{rand_core::OsRng, SaltString}, PasswordHasher};
+    let salt = SaltString::generate(&mut OsRng);
+    let argon2 = Argon2::default();
+    let password_hash = argon2.hash_password(form.new_password.as_bytes(), &salt)
+        .map_err(|e| AppError::Internal(format!("Password hash failed: {}", e)))?
+        .to_string();
+        
+    AdminUser::update_password(&state.db, admin_id, &password_hash).await?;
+    
+    let mut ctx = tera::Context::new();
+    let role = session.get::<String>("user_role").unwrap_or(None).unwrap_or_else(|| "admin".to_string());
+    ctx.insert("user_role", &role);
+    ctx.insert("flash_message", "Password berhasil diubah!");
+    ctx.insert("flash_type", "success");
+    
+    let html = state.tera.render("admin/change_password.html", &ctx)?;
+    Ok(HttpResponse::Ok().content_type("text/html").body(html))
+}

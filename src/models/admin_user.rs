@@ -76,5 +76,13 @@ impl AdminUser {
             .await?;
         Ok(())
     }
+    pub async fn update_password(pool: &MySqlPool, id: u64, new_password_hash: &str) -> Result<(), AppError> {
+        sqlx::query("UPDATE blog_admin_users SET password_hash = ? WHERE id = ?")
+            .bind(new_password_hash)
+            .bind(id)
+            .execute(pool)
+            .await?;
+        Ok(())
+    }
 }
 

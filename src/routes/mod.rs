@@ -52,11 +52,13 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
         .route("/blog/admin/login", web::post().to(admin::auth::login_submit))
         .route("/blog/admin/logout", web::get().to(admin::auth::logout))
         
-        // Password Reset
+        // Password Reset & Change
         .route("/blog/admin/forgot-password", web::get().to(admin::auth::forgot_password_page))
         .route("/blog/admin/forgot-password", web::post().to(admin::auth::forgot_password_submit))
         .route("/blog/admin/reset-password", web::get().to(admin::auth::reset_password_page))
         .route("/blog/admin/reset-password", web::post().to(admin::auth::reset_password_submit))
+        .route("/blog/admin/change-password", web::get().to(admin::auth::change_password_page))
+        .route("/blog/admin/change-password", web::post().to(admin::auth::change_password_submit))
 
         // Admin: Contributors
         .route("/blog/admin/contributors", web::get().to(admin::contributors::list))
