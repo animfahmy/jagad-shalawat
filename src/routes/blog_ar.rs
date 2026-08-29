@@ -30,7 +30,7 @@ pub async fn index(
     ctx.insert("posts", &posts);
     ctx.insert("current_page", &page);
     ctx.insert("total_pages", &total_pages);
-    ctx.insert("lang", "en");
+    ctx.insert("lang", "ar");
     ctx.insert("base_url", &state.config.base_url);
     ctx.insert("page_title", "Blog — Jagad Shalawat");
     ctx.insert("page_description", "Articles about digital payment technology, sharia-compliant payments, and automated billing solutions.");
@@ -40,7 +40,7 @@ pub async fn index(
         "Articles about digital payment technology, sharia-compliant payments, and automated billing solutions.",
         None,
         &format!("{}/blog/ar", state.config.base_url),
-        "en_US",
+        "ar_SA",
     ));
     ctx.insert("hreflang_tags", "");
 
@@ -87,7 +87,7 @@ pub async fn by_category(
     ctx.insert("category", &category);
     ctx.insert("category_name", &formatted_title);
     ctx.insert("category_title", &formatted_title);
-    ctx.insert("lang", "en");
+    ctx.insert("lang", "ar");
     ctx.insert("alternate_lang_url", &format!("/blog/kategori/{}", category));
     ctx.insert("base_url", &state.config.base_url);
     ctx.insert("page_title", &page_title);
@@ -162,7 +162,7 @@ pub async fn show(
     ctx.insert("post", &post);
     ctx.insert("comments", &comments);
     ctx.insert("related_posts", &related);
-    ctx.insert("lang", "en");
+    ctx.insert("lang", "ar");
     ctx.insert("alternate_lang_url", &alternate_lang_url);
     ctx.insert("base_url", &state.config.base_url);
     ctx.insert("page_title", &format!("{} — Jagad Shalawat Blog", title_en));
@@ -182,13 +182,13 @@ pub async fn show(
         ctx.insert("user_avatar", avatar);
     }
 
-    ctx.insert("json_ld", &seo::generate_json_ld_article(&post, &state.config.base_url, "en"));
+    ctx.insert("json_ld", &seo::generate_json_ld_article(&post, &state.config.base_url, "ar"));
     ctx.insert("og_tags", &seo::generate_og_tags(
         title_en,
         desc_en,
         post.featured_image.as_deref(),
         &format!("{}/blog/ar/{}", state.config.base_url, slug_en),
-        "en_US",
+        "ar_SA",
     ));
     ctx.insert("hreflang_tags", &seo::generate_hreflang_tags(
         &post.slug,
