@@ -6,9 +6,9 @@ use crate::config::Config;
 use crate::error::AppError;
 
 pub async fn send_password_reset_email(to_email: &str, reset_link: &str, config: &Config) -> Result<(), AppError> {
-    let smtp_username = config.smtp_username.as_deref().unwrap_or("animfahmy@yahoo.co.id");
-    let smtp_password = config.smtp_password.as_deref().unwrap_or("xsmtpsib-3eeaf86f913af270d1efe546a1d128047ff75673e908bf67b58a095180e63551-1seVL8v8DN74fGDP");
-    let smtp_server = config.smtp_server.as_deref().unwrap_or("smtp-relay.brevo.com");
+    let smtp_username = config.smtp_username.as_deref().ok_or_else(|| AppError::Internal("SMTP_USERNAME belum diatur di .env".into()))?;
+    let smtp_password = config.smtp_password.as_deref().ok_or_else(|| AppError::Internal("SMTP_PASSWORD belum diatur di .env".into()))?;
+    let smtp_server = config.smtp_server.as_deref().ok_or_else(|| AppError::Internal("SMTP_SERVER belum diatur di .env".into()))?;
     
     let html_content = format!(
         r#"

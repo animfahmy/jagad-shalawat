@@ -47,7 +47,7 @@ impl Config {
             translation_api_key: env::var("TRANSLATION_API_KEY").ok(),
             smtp_username: env::var("SMTP_USERNAME").ok(),
             smtp_password: env::var("SMTP_PASSWORD").ok(),
-            smtp_server: env::var("SMTP_SERVER").unwrap_or_else(|_| "smtp-relay.brevo.com".to_string()).into(),
+            smtp_server: env::var("SMTP_SERVER").ok(),
         }
     }
 }
