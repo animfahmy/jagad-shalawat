@@ -3,7 +3,7 @@ use crate::models::post::BlogPost;
 
 pub fn generate_json_ld_article(post: &BlogPost, base_url: &str, lang: &str) -> String {
     let url = if lang == "en" {
-        format!("{}/blog/en/{}", base_url, post.slug_en.as_deref().unwrap_or(&post.slug))
+        format!("{}/blog/ar/{}", base_url, post.slug_ar.as_deref().unwrap_or(&post.slug))
     } else {
         format!("{}/blog/{}", base_url, post.slug)
     };
@@ -122,12 +122,12 @@ pub fn generate_og_tags(title: &str, description: &str, image: Option<&str>, url
     tags
 }
 
-pub fn generate_hreflang_tags(slug_id: &str, slug_en: Option<&str>, base_url: &str) -> String {
+pub fn generate_hreflang_tags(slug_id: &str, slug_ar: Option<&str>, base_url: &str) -> String {
     let id_url = format!("{}/blog/{}", base_url, slug_id);
     let mut tags = format!(r#"<link rel="alternate" hreflang="id" href="{}" />"#, id_url);
     
-    if let Some(en) = slug_en {
-        let en_url = format!("{}/blog/en/{}", base_url, en);
+    if let Some(en) = slug_ar {
+        let en_url = format!("{}/blog/ar/{}", base_url, en);
         tags.push_str(&format!("\n<link rel=\"alternate\" hreflang=\"en\" href=\"{}\" />", en_url));
         tags.push_str(&format!("\n<link rel=\"alternate\" hreflang=\"x-default\" href=\"{}\" />", id_url));
     } else {
@@ -140,4 +140,6 @@ pub fn generate_hreflang_tags(slug_id: &str, slug_en: Option<&str>, base_url: &s
 pub fn generate_canonical(url: &str) -> String {
     format!(r#"<link rel="canonical" href="{}" />"#, url)
 }
+
+
 

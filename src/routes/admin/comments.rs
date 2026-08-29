@@ -90,7 +90,7 @@ pub async fn approve(
     require_auth(&session)?;
     let comment_id = path.into_inner();
     
-    let comment_row = sqlx::query("SELECT c.post_id, p.slug, p.slug_en FROM blog_comments c LEFT JOIN blog_posts p ON c.post_id = p.id WHERE c.id = ?")
+    let comment_row = sqlx::query("SELECT c.post_id, p.slug, p.slug_ar FROM blog_comments c LEFT JOIN blog_posts p ON c.post_id = p.id WHERE c.id = ?")
         .bind(comment_id)
         .fetch_optional(&state.db)
         .await?
@@ -98,7 +98,7 @@ pub async fn approve(
         
     let post_id: u64 = comment_row.try_get("post_id").unwrap_or(0);
     let post_slug: Option<String> = comment_row.try_get("slug").unwrap_or(None);
-    let post_slug_en: Option<String> = comment_row.try_get("slug_en").unwrap_or(None);
+    let post_slug_ar: Option<String> = comment_row.try_get("slug_ar").unwrap_or(None);
         
     sqlx::query("UPDATE blog_comments SET status = 'approved' WHERE id = ?")
         .bind(comment_id)
@@ -107,7 +107,7 @@ pub async fn approve(
         
     let _ = state.cache.invalidate_comments(post_id).await;
     if let Some(slug) = post_slug {
-        let _ = state.cache.invalidate_post(&slug, post_slug_en.as_deref()).await;
+        let _ = state.cache.invalidate_post(&slug, post_slug_ar.as_deref()).await;
     }
 
     Ok(HttpResponse::Found()
@@ -124,7 +124,7 @@ pub async fn reject(
     require_auth(&session)?;
     let comment_id = path.into_inner();
     
-    let comment_row = sqlx::query("SELECT c.post_id, p.slug, p.slug_en FROM blog_comments c LEFT JOIN blog_posts p ON c.post_id = p.id WHERE c.id = ?")
+    let comment_row = sqlx::query("SELECT c.post_id, p.slug, p.slug_ar FROM blog_comments c LEFT JOIN blog_posts p ON c.post_id = p.id WHERE c.id = ?")
         .bind(comment_id)
         .fetch_optional(&state.db)
         .await?
@@ -132,7 +132,7 @@ pub async fn reject(
         
     let post_id: u64 = comment_row.try_get("post_id").unwrap_or(0);
     let post_slug: Option<String> = comment_row.try_get("slug").unwrap_or(None);
-    let post_slug_en: Option<String> = comment_row.try_get("slug_en").unwrap_or(None);
+    let post_slug_ar: Option<String> = comment_row.try_get("slug_ar").unwrap_or(None);
         
     sqlx::query("UPDATE blog_comments SET status = 'rejected', rejection_reason = ? WHERE id = ?")
         .bind(&form.reason)
@@ -142,7 +142,7 @@ pub async fn reject(
         
     let _ = state.cache.invalidate_comments(post_id).await;
     if let Some(slug) = post_slug {
-        let _ = state.cache.invalidate_post(&slug, post_slug_en.as_deref()).await;
+        let _ = state.cache.invalidate_post(&slug, post_slug_ar.as_deref()).await;
     }
 
     Ok(HttpResponse::Found()

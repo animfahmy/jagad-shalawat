@@ -113,9 +113,9 @@ pub async fn show(
     _req: HttpRequest,
     session: Session,
 ) -> Result<HttpResponse, AppError> {
-    let slug_en = path.into_inner();
+    let slug_ar = path.into_inner();
 
-    if slug_en == "feed.xml" || slug_en == "category" || slug_en == "kategori" {
+    if slug_ar == "feed.xml" || slug_ar == "category" || slug_ar == "kategori" {
         return Err(AppError::NotFound("Not found".into()));
     }
 
@@ -124,11 +124,11 @@ pub async fn show(
     let user_avatar = session.get::<String>("user_avatar").ok().flatten();
     let is_logged_in = user_name.is_some();
 
-    let cache_key = format!("blog:page:en:{}", slug_en);
+    let cache_key = format!("blog:page:en:{}", slug_ar);
 
     if !is_logged_in {
         if let Some(cached) = state.cache.get(&cache_key).await? {
-            let stats_key = format!("blog:stats:slug_en:{}", slug_en);
+            let stats_key = format!("blog:stats:slug_ar:{}", slug_ar);
             let _ = state.cache.increment(&stats_key).await;
 
             return Ok(HttpResponse::Ok()
@@ -140,7 +140,7 @@ pub async fn show(
     }
 
     // Fetch post by English slug
-    let post = crate::models::post::BlogPost::find_published_by_slug_en(&state.db, &slug_en)
+    let post = crate::models::post::BlogPost::find_published_by_slug_ar(&state.db, &slug_ar)
         .await?
         .ok_or_else(|| AppError::NotFound("Article not found".into()))?;
 
@@ -151,9 +151,9 @@ pub async fn show(
         crate::models::post::PostSummary::find_related(&state.db, cat, post.id, 3).await?
     };
 
-    let title_en = post.title_en.as_deref().unwrap_or(&post.title);
-    let desc_en = post.meta_description_en.as_deref()
-        .or(post.excerpt_en.as_deref())
+    let title_ar = post.title_ar.as_deref().unwrap_or(&post.title);
+    let desc_ar = post.meta_description_ar.as_deref()
+        .or(post.excerpt_ar.as_deref())
         .unwrap_or("");
 
     let alternate_lang_url = format!("/blog/{}", post.slug);
@@ -165,9 +165,9 @@ pub async fn show(
     ctx.insert("lang", "ar");
     ctx.insert("alternate_lang_url", &alternate_lang_url);
     ctx.insert("base_url", &state.config.base_url);
-    ctx.insert("page_title", &format!("{} — Jagad Shalawat Blog", title_en));
-    ctx.insert("page_description", desc_en);
-    ctx.insert("canonical_url", &format!("{}/blog/ar/{}", state.config.base_url, slug_en));
+    ctx.insert("page_title", &format!("{} — Jagad Shalawat Blog", title_ar));
+    ctx.insert("page_description", desc_ar);
+    ctx.insert("canonical_url", &format!("{}/blog/ar/{}", state.config.base_url, slug_ar));
     ctx.insert("turnstile_site_key", &state.config.turnstile_site_key);
 
     // Commenter user info
@@ -184,26 +184,26 @@ pub async fn show(
 
     ctx.insert("json_ld", &seo::generate_json_ld_article(&post, &state.config.base_url, "ar"));
     ctx.insert("og_tags", &seo::generate_og_tags(
-        title_en,
-        desc_en,
+        title_ar,
+        desc_ar,
         post.featured_image.as_deref(),
-        &format!("{}/blog/ar/{}", state.config.base_url, slug_en),
+        &format!("{}/blog/ar/{}", state.config.base_url, slug_ar),
         "ar_SA",
     ));
     ctx.insert("hreflang_tags", &seo::generate_hreflang_tags(
         &post.slug,
-        post.slug_en.as_deref(),
+        post.slug_ar.as_deref(),
         &state.config.base_url,
     ));
     ctx.insert("breadcrumb_ld", &seo::generate_json_ld_breadcrumb(&[
         ("Home".into(), state.config.base_url.clone()),
         ("Blog".into(), format!("{}/blog/ar", state.config.base_url)),
-        (title_en.to_string(), format!("{}/blog/ar/{}", state.config.base_url, slug_en)),
+        (title_ar.to_string(), format!("{}/blog/ar/{}", state.config.base_url, slug_ar)),
     ]));
 
     let html = state.tera.render("blog/post_ar.html", &ctx)?;
 
-    let stats_key = format!("blog:stats:slug_en:{}", slug_en);
+    let stats_key = format!("blog:stats:slug_ar:{}", slug_ar);
     let _ = state.cache.increment(&stats_key).await;
 
     if is_logged_in {

@@ -51,17 +51,17 @@
     <div class="blog-grid">
         {% for post in posts %}
         <article class="post-card">
-            <a href="/blog/ar/{{ post.slug_en }}" aria-label="Read {{ post.title_en }}">
+            <a href="/blog/ar/{{ post.slug_ar }}" aria-label="Read {{ post.title_ar }}">
                 {% if post.featured_image %}
-                <img src="{{ post.featured_image }}" alt="{{ post.title_en }}" class="post-image" loading="lazy">
+                <img src="{{ post.featured_image }}" alt="{{ post.title_ar }}" class="post-image" loading="lazy">
                 {% else %}
                 <div class="post-image"></div>
                 {% endif %}
             </a>
             <div class="post-content">
                 <span class="post-category">{{ post.category }}</span>
-                <h2 class="post-title"><a href="/blog/ar/{{ post.slug_en }}">{{ post.title_en }}</a></h2>
-                <p class="post-excerpt">{{ post.excerpt_en }}</p>
+                <h2 class="post-title"><a href="/blog/ar/{{ post.slug_ar }}">{{ post.title_ar }}</a></h2>
+                <p class="post-excerpt">{{ post.excerpt_ar }}</p>
                 
                 <footer class="post-meta">
                     <div class="post-author-date">
@@ -98,3 +98,4 @@
     {% endif %}
 </div>
 {% endblock %}
+

@@ -8,17 +8,17 @@ use sqlx::{FromRow, MySqlPool};
 pub struct BlogPost {
     pub id: u64,
     pub slug: String,
-    pub slug_en: Option<String>,
+    pub slug_ar: Option<String>,
     pub title: String,
-    pub title_en: Option<String>,
+    pub title_ar: Option<String>,
     pub meta_description: Option<String>,
-    pub meta_description_en: Option<String>,
+    pub meta_description_ar: Option<String>,
     pub excerpt: Option<String>,
-    pub excerpt_en: Option<String>,
+    pub excerpt_ar: Option<String>,
     pub content_markdown: String,
-    pub content_markdown_en: Option<String>,
+    pub content_markdown_ar: Option<String>,
     pub content_html: String,
-    pub content_html_en: Option<String>,
+    pub content_html_ar: Option<String>,
     pub featured_image: Option<String>,
     pub author_name: String,
     pub category: String,
@@ -39,11 +39,11 @@ pub struct BlogPost {
 pub struct PostSummary {
     pub id: u64,
     pub slug: String,
-    pub slug_en: Option<String>,
+    pub slug_ar: Option<String>,
     pub title: String,
-    pub title_en: Option<String>,
+    pub title_ar: Option<String>,
     pub excerpt: Option<String>,
-    pub excerpt_en: Option<String>,
+    pub excerpt_ar: Option<String>,
     pub featured_image: Option<String>,
     pub category: String,
     pub published_at: Option<DateTime<Utc>>,
@@ -85,7 +85,7 @@ pub struct UpdatePost {
 impl BlogPost {
     pub async fn find_published_by_slug(pool: &MySqlPool, slug: &str) -> Result<Option<BlogPost>, AppError> {
         let post = sqlx::query_as::<_, BlogPost>(
-            "SELECT * FROM blog_posts WHERE (slug = ? OR slug_en = ?) AND status = 'published'"
+            "SELECT * FROM blog_posts WHERE (slug = ? OR slug_ar = ?) AND status = 'published'"
         )
         .bind(slug)
         .bind(slug)
@@ -97,7 +97,7 @@ impl BlogPost {
     pub async fn find_all_published(pool: &MySqlPool, page: u32, per_page: u32) -> Result<Vec<PostSummary>, AppError> {
         let offset = (page.saturating_sub(1)) * per_page;
         let posts = sqlx::query_as::<_, PostSummary>(
-            "SELECT id, slug, slug_en, title, title_en, excerpt, excerpt_en, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = 'published' ORDER BY published_at DESC LIMIT ? OFFSET ?"
+            "SELECT id, slug, slug_ar, title, title_ar, excerpt, excerpt_ar, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = 'published' ORDER BY published_at DESC LIMIT ? OFFSET ?"
         )
         .bind(per_page)
         .bind(offset)
@@ -109,7 +109,7 @@ impl BlogPost {
     pub async fn find_by_category(pool: &MySqlPool, category: &str, page: u32, per_page: u32) -> Result<Vec<PostSummary>, AppError> {
         let offset = (page.saturating_sub(1)) * per_page;
         let posts = sqlx::query_as::<_, PostSummary>(
-            "SELECT id, slug, slug_en, title, title_en, excerpt, excerpt_en, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = 'published' AND (LOWER(category) = LOWER(?) OR LOWER(REPLACE(category, ' ', '-')) = LOWER(?)) ORDER BY published_at DESC LIMIT ? OFFSET ?"
+            "SELECT id, slug, slug_ar, title, title_ar, excerpt, excerpt_ar, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = 'published' AND (LOWER(category) = LOWER(?) OR LOWER(REPLACE(category, ' ', '-')) = LOWER(?)) ORDER BY published_at DESC LIMIT ? OFFSET ?"
         )
         .bind(category)
         .bind(category)
@@ -134,7 +134,7 @@ impl BlogPost {
         
         let posts = if let Some(status) = status_filter {
             sqlx::query_as::<_, PostSummary>(
-                "SELECT id, slug, slug_en, title, title_en, excerpt, excerpt_en, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = ? ORDER BY created_at DESC LIMIT ? OFFSET ?"
+                "SELECT id, slug, slug_ar, title, title_ar, excerpt, excerpt_ar, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = ? ORDER BY created_at DESC LIMIT ? OFFSET ?"
             )
             .bind(status)
             .bind(per_page)
@@ -143,7 +143,7 @@ impl BlogPost {
             .await?
         } else {
             sqlx::query_as::<_, PostSummary>(
-                "SELECT id, slug, slug_en, title, title_en, excerpt, excerpt_en, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts ORDER BY created_at DESC LIMIT ? OFFSET ?"
+                "SELECT id, slug, slug_ar, title, title_ar, excerpt, excerpt_ar, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts ORDER BY created_at DESC LIMIT ? OFFSET ?"
             )
             .bind(per_page)
             .bind(offset)
@@ -226,25 +226,25 @@ impl BlogPost {
         #[derive(FromRow)]
         struct SlugData {
             slug: String,
-            slug_en: Option<String>,
+            slug_ar: Option<String>,
             published_at: Option<DateTime<Utc>>,
         }
         
         let records = sqlx::query_as::<_, SlugData>(
-            "SELECT slug, slug_en, published_at FROM blog_posts WHERE status = 'published'"
+            "SELECT slug, slug_ar, published_at FROM blog_posts WHERE status = 'published'"
         )
         .fetch_all(pool)
         .await?;
         
-        Ok(records.into_iter().map(|r| (r.slug, r.slug_en, r.published_at)).collect())
+        Ok(records.into_iter().map(|r| (r.slug, r.slug_ar, r.published_at)).collect())
     }
 
     /// Find a published post by its English slug.
-    pub async fn find_published_by_slug_en(pool: &MySqlPool, slug_en: &str) -> Result<Option<BlogPost>, AppError> {
+    pub async fn find_published_by_slug_ar(pool: &MySqlPool, slug_ar: &str) -> Result<Option<BlogPost>, AppError> {
         let post = sqlx::query_as::<_, BlogPost>(
-            "SELECT * FROM blog_posts WHERE slug_en = ? AND status = 'published'"
+            "SELECT * FROM blog_posts WHERE slug_ar = ? AND status = 'published'"
         )
-        .bind(slug_en)
+        .bind(slug_ar)
         .fetch_optional(pool)
         .await?;
         Ok(post)
@@ -268,7 +268,7 @@ impl PostSummary {
     pub async fn find_all_published(pool: &MySqlPool, page: i64, per_page: i64) -> Result<Vec<PostSummary>, AppError> {
         let offset = (page.max(1) - 1) * per_page;
         let posts = sqlx::query_as::<_, PostSummary>(
-            "SELECT id, slug, slug_en, title, title_en, excerpt, excerpt_en, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = 'published' ORDER BY published_at DESC LIMIT ? OFFSET ?"
+            "SELECT id, slug, slug_ar, title, title_ar, excerpt, excerpt_ar, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = 'published' ORDER BY published_at DESC LIMIT ? OFFSET ?"
         )
         .bind(per_page)
         .bind(offset)
@@ -280,7 +280,7 @@ impl PostSummary {
     pub async fn find_by_category(pool: &MySqlPool, category: &str, page: i64, per_page: i64) -> Result<Vec<PostSummary>, AppError> {
         let offset = (page.max(1) - 1) * per_page;
         let posts = sqlx::query_as::<_, PostSummary>(
-            "SELECT id, slug, slug_en, title, title_en, excerpt, excerpt_en, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = 'published' AND (LOWER(category) = LOWER(?) OR LOWER(REPLACE(category, ' ', '-')) = LOWER(?)) ORDER BY published_at DESC LIMIT ? OFFSET ?"
+            "SELECT id, slug, slug_ar, title, title_ar, excerpt, excerpt_ar, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = 'published' AND (LOWER(category) = LOWER(?) OR LOWER(REPLACE(category, ' ', '-')) = LOWER(?)) ORDER BY published_at DESC LIMIT ? OFFSET ?"
         )
         .bind(category)
         .bind(category)
@@ -293,7 +293,7 @@ impl PostSummary {
 
     pub async fn find_related(pool: &MySqlPool, category: &str, exclude_id: u64, limit: i32) -> Result<Vec<PostSummary>, AppError> {
         let posts = sqlx::query_as::<_, PostSummary>(
-            "SELECT id, slug, slug_en, title, title_en, excerpt, excerpt_en, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = 'published' AND category = ? AND id != ? ORDER BY published_at DESC LIMIT ?"
+            "SELECT id, slug, slug_ar, title, title_ar, excerpt, excerpt_ar, featured_image, category, published_at, reading_time_minutes, view_count, author_name FROM blog_posts WHERE status = 'published' AND category = ? AND id != ? ORDER BY published_at DESC LIMIT ?"
         )
         .bind(category)
         .bind(exclude_id)

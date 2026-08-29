@@ -48,12 +48,12 @@
 {% set p_slug = post.slug | default(value='') %}
 {% set p_excerpt = post.excerpt | default(value='') %}
 {% set p_content_markdown = post.content_markdown | default(value='') %}
-{% set p_title_en = post.title_en | default(value='') %}
-{% set p_slug_en = post.slug_en | default(value='') %}
-{% set p_excerpt_en = post.excerpt_en | default(value='') %}
-{% set p_content_markdown_en = post.content_markdown_en | default(value='') %}
+{% set p_title_ar = post.title_ar | default(value='') %}
+{% set p_slug_ar = post.slug_ar | default(value='') %}
+{% set p_excerpt_ar = post.excerpt_ar | default(value='') %}
+{% set p_content_markdown_ar = post.content_markdown_ar | default(value='') %}
 {% set p_meta_description = post.meta_description | default(value='') %}
-{% set p_meta_description_en = post.meta_description_en | default(value='') %}
+{% set p_meta_description_ar = post.meta_description_ar | default(value='') %}
 {% set p_category = post.category | default(value='') %}
 {% set p_tags = post.tags | default(value='') %}
 {% set p_status = post.status | default(value='draft') %}
@@ -98,20 +98,20 @@
                     <!-- AR Content -->
                     <div id="content-ar" class="tab-content">
                         <div class="form-group">
-                            <label for="title_en">Title (AR)</label>
-                            <input type="text" id="title_en" name="title_en" class="form-control" value="{{ p_title_en }}" onchange="if(!document.getElementById('slug_en').value) autoGenerateSlug('title_en', 'slug_en')">
+                            <label for="title_ar">Title (AR)</label>
+                            <input type="text" id="title_ar" name="title_ar" class="form-control" value="{{ p_title_ar }}" onchange="if(!document.getElementById('slug_ar').value) autoGenerateSlug('title_ar', 'slug_ar')">
                         </div>
                         <div class="form-group">
-                            <label for="slug_en">Slug (AR)</label>
-                            <input type="text" id="slug_en" name="slug_en" class="form-control" value="{{ p_slug_en }}">
+                            <label for="slug_ar">Slug (AR)</label>
+                            <input type="text" id="slug_ar" name="slug_ar" class="form-control" value="{{ p_slug_ar }}">
                         </div>
                         <div class="form-group">
-                            <label for="excerpt_en">Excerpt (AR)</label>
-                            <textarea id="excerpt_en" name="excerpt_en" class="form-control" rows="3">{{ p_excerpt_en }}</textarea>
+                            <label for="excerpt_ar">Excerpt (AR)</label>
+                            <textarea id="excerpt_ar" name="excerpt_ar" class="form-control" rows="3">{{ p_excerpt_ar }}</textarea>
                         </div>
                         <div class="form-group">
-                            <label for="content_markdown_en">Content (AR)</label>
-                            <textarea id="content_markdown_en" name="content_markdown_en" class="form-control editor-textarea">{{ p_content_markdown_en }}</textarea>
+                            <label for="content_markdown_ar">Content (AR)</label>
+                            <textarea id="content_markdown_ar" name="content_markdown_ar" class="form-control editor-textarea">{{ p_content_markdown_ar }}</textarea>
                         </div>
                         <div style="text-align: right; margin-top: 1rem;">
                             <button type="button" class="btn btn-outline">Auto-Translate from ID</button>
@@ -129,8 +129,8 @@
                         <div class="help-text">Kosongkan jika ingin otomatis mengambil dari Excerpt (ID). Maksimal ~160 karakter.</div>
                     </div>
                     <div class="form-group">
-                        <label for="meta_description_en">Meta Description (AR)</label>
-                        <textarea id="meta_description_en" name="meta_description_en" class="form-control" rows="2" placeholder="Search engine description (Arabic (AR))...">{{ p_meta_description_en }}</textarea>
+                        <label for="meta_description_ar">Meta Description (AR)</label>
+                        <textarea id="meta_description_ar" name="meta_description_ar" class="form-control" rows="2" placeholder="Search engine description (Arabic (AR))...">{{ p_meta_description_ar }}</textarea>
                         <div class="help-text">Leave blank to automatically use Excerpt (AR). Max ~160 characters.</div>
                     </div>
                 </div>

@@ -90,11 +90,11 @@ impl CacheService {
     pub async fn invalidate_post(
         &self,
         slug: &str,
-        slug_en: Option<&str>,
+        slug_ar: Option<&str>,
     ) -> Result<(), AppError> {
         self.delete(&format!("blog:page:id:{}", slug)).await?;
 
-        if let Some(en) = slug_en {
+        if let Some(en) = slug_ar {
             self.delete(&format!("blog:page:en:{}", en)).await?;
         }
 
@@ -118,3 +118,4 @@ impl CacheService {
         Ok(())
     }
 }
+

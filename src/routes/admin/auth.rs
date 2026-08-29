@@ -45,7 +45,7 @@ pub async fn login_submit(
     state: web::Data<AppState>,
     form: web::Form<LoginForm>
 ) -> Result<impl Responder, AppError> {
-    let user = crate::models::admin_user::AdminUser::find_by_username(&state.db, &form.username).await?;
+    let user = crate::models::admin_user::AdminUser::find_by_username_or_email(&state.db, &form.username).await?;
 
     let user = user.ok_or_else(|| AppError::BadRequest("Username atau password salah.".into()))?;
 

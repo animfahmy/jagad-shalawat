@@ -71,12 +71,12 @@
         <span class="breadcrumb-separator">/</span>
         <a href="/blog/ar/category/{{ post.category | lower | replace(from=' ', to='-') }}">{{ post.category }}</a>
         <span class="breadcrumb-separator">/</span>
-        <span aria-current="page">{{ post.title_en }}</span>
+        <span aria-current="page">{{ post.title_ar }}</span>
     </nav>
 
     <header class="article-header">
         <span class="article-category">{{ post.category }}</span>
-        <h1 class="article-title">{{ post.title_en }}</h1>
+        <h1 class="article-title">{{ post.title_ar }}</h1>
         <div class="article-meta">
             <span>By <strong>{{ post.author_name }}</strong></span>
             <span><time datetime="{{ post.published_at | date(format='%Y-%m-%dT%H:%M:%SZ') }}">{{ post.published_at | date(format="%b %d, %Y") }}</time></span>
@@ -86,11 +86,11 @@
     </header>
 
     {% if post.featured_image %}
-    <img src="{{ post.featured_image }}" alt="{{ post.title_en }}" class="article-image">
+    <img src="{{ post.featured_image }}" alt="{{ post.title_ar }}" class="article-image">
     {% endif %}
 
     <div class="article-content">
-        {{ post.content_html_en | safe }}
+        {{ post.content_html_ar | safe }}
         
         {% if post.sources and post.sources | length > 0 %}
         <div class="article-source">
@@ -129,14 +129,14 @@
         <h3>Related Articles</h3>
         <div class="related-grid">
             {% for rel_post in related_posts %}
-            <a href="/blog/ar/{{ rel_post.slug_en }}" class="related-card" style="text-decoration: none; color: inherit;">
+            <a href="/blog/ar/{{ rel_post.slug_ar }}" class="related-card" style="text-decoration: none; color: inherit;">
                 {% if rel_post.featured_image %}
-                <img src="{{ rel_post.featured_image }}" alt="{{ rel_post.title_en }}" class="related-image" loading="lazy">
+                <img src="{{ rel_post.featured_image }}" alt="{{ rel_post.title_ar }}" class="related-image" loading="lazy">
                 {% else %}
                 <div class="related-image" style="background: var(--bg-gray);"></div>
                 {% endif %}
                 <div class="related-content">
-                    <h4 class="related-title">{{ rel_post.title_en }}</h4>
+                    <h4 class="related-title">{{ rel_post.title_ar }}</h4>
                     <span style="font-size: 0.875rem; color: var(--text-light);">{{ rel_post.published_at | date(format="%b %d, %Y") }}</span>
                 </div>
             </a>
@@ -162,17 +162,17 @@
                         <div style="font-size: 0.8rem; color: var(--text-light);">{{ user_email }}</div>
                     </div>
                 </div>
-                <a href="/blog/auth/logout?return_to=/blog/ar/{{ post.slug_en }}" style="font-size: 0.85rem; color: var(--danger); text-decoration: none; font-weight: 500;">Logout</a>
+                <a href="/blog/auth/logout?return_to=/blog/ar/{{ post.slug_ar }}" style="font-size: 0.85rem; color: var(--danger); text-decoration: none; font-weight: 500;">Logout</a>
             </div>
             {% else %}
             <div style="margin-bottom: 1.25rem;">
                 <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 0.5rem;">Quick sign in to comment:</p>
                 <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-                    <a href="/blog/auth/google?return_to=/blog/ar/{{ post.slug_en }}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 0.375rem; text-decoration: none; color: var(--text); background: #fff; font-size: 0.875rem; font-weight: 500;">
+                    <a href="/blog/auth/google?return_to=/blog/ar/{{ post.slug_ar }}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 0.375rem; text-decoration: none; color: var(--text); background: #fff; font-size: 0.875rem; font-weight: 500;">
                         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
                         Login with Google
                     </a>
-                    <a href="/blog/auth/github?return_to=/blog/ar/{{ post.slug_en }}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 0.375rem; text-decoration: none; color: var(--text); background: #fff; font-size: 0.875rem; font-weight: 500;">
+                    <a href="/blog/auth/github?return_to=/blog/ar/{{ post.slug_ar }}" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 0.375rem; text-decoration: none; color: var(--text); background: #fff; font-size: 0.875rem; font-weight: 500;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
                         Login with GitHub
                     </a>
@@ -180,7 +180,7 @@
             </div>
             {% endif %}
             
-            <form action="/blog/ar/{{ post.slug_en }}/comment" method="POST">
+            <form action="/blog/ar/{{ post.slug_ar }}/comment" method="POST">
                 <!-- Honeypot -->
                 <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
                 
@@ -238,3 +238,4 @@
     </section>
 </div>
 {% endblock %}
+

@@ -63,9 +63,9 @@ async fn generate_rss(state: &AppState, lang: &str) -> Result<HttpResponse, AppE
     for post in &posts {
         let (item_title, item_desc, item_link) = match lang {
             "en" => {
-                let t = post.title_en.as_deref().unwrap_or(&post.title);
-                let d = post.excerpt_en.as_deref().unwrap_or(post.excerpt.as_deref().unwrap_or(""));
-                let slug = post.slug_en.as_deref().unwrap_or(&post.slug);
+                let t = post.title_ar.as_deref().unwrap_or(&post.title);
+                let d = post.excerpt_ar.as_deref().unwrap_or(post.excerpt.as_deref().unwrap_or(""));
+                let slug = post.slug_ar.as_deref().unwrap_or(&post.slug);
                 let l = format!("{}/blog/ar/{}", state.config.base_url, slug);
                 (t.to_string(), d.to_string(), l)
             }

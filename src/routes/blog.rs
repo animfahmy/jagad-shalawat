@@ -93,7 +93,7 @@ pub async fn by_category(
     ctx.insert("category_name", &formatted_title);
     ctx.insert("category_title", &formatted_title);
     ctx.insert("lang", "id");
-    ctx.insert("alternate_lang_url", &format!("/blog/en/category/{}", category));
+    ctx.insert("alternate_lang_url", &format!("/blog/ar/category/{}", category));
     ctx.insert("base_url", &state.config.base_url);
     ctx.insert("page_title", &page_title);
     ctx.insert("page_description", &format!("Artikel kategori {} di Blog Jagad Shalawat", formatted_title));
@@ -161,9 +161,9 @@ pub async fn show(
         crate::models::post::PostSummary::find_related(&state.db, cat, post.id, 3).await?
     };
 
-    let alternate_lang_url = if let Some(ref slug_en) = post.slug_en {
-        if !slug_en.trim().is_empty() {
-            format!("/blog/en/{}", slug_en)
+    let alternate_lang_url = if let Some(ref slug_ar) = post.slug_ar {
+        if !slug_ar.trim().is_empty() {
+            format!("/blog/ar/{}", slug_ar)
         } else {
             "/blog/en".to_string()
         }
@@ -207,7 +207,7 @@ pub async fn show(
     ));
     ctx.insert("hreflang_tags", &seo::generate_hreflang_tags(
         &post.slug,
-        post.slug_en.as_deref(),
+        post.slug_ar.as_deref(),
         &state.config.base_url,
     ));
     ctx.insert("breadcrumb_ld", &seo::generate_json_ld_breadcrumb(&[
@@ -263,3 +263,5 @@ fn capitalize_words(s: &str) -> String {
         .collect::<Vec<_>>()
         .join(" ")
 }
+
+

@@ -160,7 +160,7 @@ pub async fn submit(
     if status == "approved" {
         state.cache.invalidate_comments(post.id).await?;
         // Also invalidate the post page cache so comments appear
-        state.cache.invalidate_post(&post.slug, post.slug_en.as_deref()).await?;
+        state.cache.invalidate_post(&post.slug, post.slug_ar.as_deref()).await?;
     }
 
     info!(
@@ -208,3 +208,4 @@ fn redirect_to_post(slug: &str) -> HttpResponse {
         .insert_header(("Location", format!("/blog/{}#komentar", slug)))
         .finish()
 }
+

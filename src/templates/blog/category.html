@@ -37,24 +37,24 @@
 <div class="container">
     <header class="category-header">
         <h1>{{ category_name | default(value=category_title | default(value='Kategori')) }}</h1>
-        <p>{% if lang == 'en' %}Showing all articles in this category.{% else %}Menampilkan semua artikel dalam kategori ini.{% endif %}</p>
+        <p>{% if lang == 'ar' %}Showing all articles in this category.{% else %}Menampilkan semua artikel dalam kategori ini.{% endif %}</p>
     </header>
 
     {% if posts | length > 0 %}
     <div class="blog-grid">
         {% for post in posts %}
         <article class="post-card">
-            <a href="{% if lang == 'en' and post.slug_en %}/blog/en/{{ post.slug_en }}{% else %}/blog/{{ post.slug }}{% endif %}" aria-label="{% if lang == 'en' %}Read {{ post.title_en | default(value=post.title) }}{% else %}Baca {{ post.title }}{% endif %}">
+            <a href="{% if lang == 'ar' and post.slug_ar %}/blog/ar/{{ post.slug_ar }}{% else %}/blog/{{ post.slug }}{% endif %}" aria-label="{% if lang == 'ar' %}Read {{ post.title_ar | default(value=post.title) }}{% else %}Baca {{ post.title }}{% endif %}">
                 {% if post.featured_image %}
-                <img src="{{ post.featured_image }}" alt="{% if lang == 'en' %}{{ post.title_en | default(value=post.title) }}{% else %}{{ post.title }}{% endif %}" class="post-image" loading="lazy">
+                <img src="{{ post.featured_image }}" alt="{% if lang == 'ar' %}{{ post.title_ar | default(value=post.title) }}{% else %}{{ post.title }}{% endif %}" class="post-image" loading="lazy">
                 {% else %}
                 <div class="post-image"></div>
                 {% endif %}
             </a>
             <div class="post-content">
                 <span class="post-category">{{ post.category }}</span>
-                <h2 class="post-title"><a href="{% if lang == 'en' and post.slug_en %}/blog/en/{{ post.slug_en }}{% else %}/blog/{{ post.slug }}{% endif %}">{% if lang == 'en' %}{{ post.title_en | default(value=post.title) }}{% else %}{{ post.title }}{% endif %}</a></h2>
-                <p class="post-excerpt">{% if lang == 'en' %}{{ post.excerpt_en | default(value=post.excerpt) }}{% else %}{{ post.excerpt }}{% endif %}</p>
+                <h2 class="post-title"><a href="{% if lang == 'ar' and post.slug_ar %}/blog/ar/{{ post.slug_ar }}{% else %}/blog/{{ post.slug }}{% endif %}">{% if lang == 'ar' %}{{ post.title_ar | default(value=post.title) }}{% else %}{{ post.title }}{% endif %}</a></h2>
+                <p class="post-excerpt">{% if lang == 'ar' %}{{ post.excerpt_ar | default(value=post.excerpt) }}{% else %}{{ post.excerpt }}{% endif %}</p>
                 
                 <footer class="post-meta">
                     <div class="post-author-date">
@@ -64,7 +64,7 @@
                         </time>
                     </div>
                     <div>
-                        <span>{{ post.reading_time_minutes }} {% if lang == 'en' %}min{% else %}mnt{% endif %}</span> • <span>{{ post.view_count }} {% if lang == 'en' %}views{% else %}view{% endif %}</span>
+                        <span>{{ post.reading_time_minutes }} {% if lang == 'ar' %}min{% else %}mnt{% endif %}</span> • <span>{{ post.view_count }} {% if lang == 'ar' %}views{% else %}view{% endif %}</span>
                     </div>
                 </footer>
             </div>
@@ -75,26 +75,28 @@
     {% if total_pages > 1 %}
     <nav class="pagination" aria-label="Navigasi halaman">
         {% if current_page > 1 %}
-        <a href="?{% if lang == 'en' %}page{% else %}halaman{% endif %}={{ current_page - 1 }}" class="btn-page">{% if lang == 'en' %}Previous{% else %}Sebelumnya{% endif %}</a>
+        <a href="?{% if lang == 'ar' %}page{% else %}halaman{% endif %}={{ current_page - 1 }}" class="btn-page">{% if lang == 'ar' %}Previous{% else %}Sebelumnya{% endif %}</a>
         {% else %}
-        <span class="btn-page" disabled>{% if lang == 'en' %}Previous{% else %}Sebelumnya{% endif %}</span>
+        <span class="btn-page" disabled>{% if lang == 'ar' %}Previous{% else %}Sebelumnya{% endif %}</span>
         {% endif %}
         
-        <span class="btn-page">{% if lang == 'en' %}Page {{ current_page }} of {{ total_pages }}{% else %}Hal {{ current_page }} dari {{ total_pages }}{% endif %}</span>
+        <span class="btn-page">{% if lang == 'ar' %}Page {{ current_page }} of {{ total_pages }}{% else %}Hal {{ current_page }} dari {{ total_pages }}{% endif %}</span>
         
         {% if current_page < total_pages %}
-        <a href="?{% if lang == 'en' %}page{% else %}halaman{% endif %}={{ current_page + 1 }}" class="btn-page">{% if lang == 'en' %}Next{% else %}Selanjutnya{% endif %}</a>
+        <a href="?{% if lang == 'ar' %}page{% else %}halaman{% endif %}={{ current_page + 1 }}" class="btn-page">{% if lang == 'ar' %}Next{% else %}Selanjutnya{% endif %}</a>
         {% else %}
-        <span class="btn-page" disabled>{% if lang == 'en' %}Next{% else %}Selanjutnya{% endif %}</span>
+        <span class="btn-page" disabled>{% if lang == 'ar' %}Next{% else %}Selanjutnya{% endif %}</span>
         {% endif %}
     </nav>
     {% endif %}
     
     {% else %}
     <div style="text-align: center; padding: 4rem 0;">
-        <p>{% if lang == 'en' %}No articles found in this category.{% else %}Belum ada artikel di kategori ini.{% endif %}</p>
-        <a href="{% if lang == 'en' %}/blog/en{% else %}/blog{% endif %}" class="btn-page" style="display: inline-block; margin-top: 1rem;">{% if lang == 'en' %}Back to Blog{% else %}Kembali ke Blog{% endif %}</a>
+        <p>{% if lang == 'ar' %}No articles found in this category.{% else %}Belum ada artikel di kategori ini.{% endif %}</p>
+        <a href="{% if lang == 'ar' %}/blog/en{% else %}/blog{% endif %}" class="btn-page" style="display: inline-block; margin-top: 1rem;">{% if lang == 'ar' %}Back to Blog{% else %}Kembali ke Blog{% endif %}</a>
     </div>
     {% endif %}
 </div>
 {% endblock %}
+
+

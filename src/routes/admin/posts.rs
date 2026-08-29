@@ -22,12 +22,12 @@ pub struct PostForm {
     pub title: String,
     pub slug: Option<String>,
     pub content_markdown: String,
-    pub title_en: Option<String>,
-    pub slug_en: Option<String>,
-    pub excerpt_en: Option<String>,
-    pub content_markdown_en: Option<String>,
+    pub title_ar: Option<String>,
+    pub slug_ar: Option<String>,
+    pub excerpt_ar: Option<String>,
+    pub content_markdown_ar: Option<String>,
     pub meta_description: Option<String>,
-    pub meta_description_en: Option<String>,
+    pub meta_description_ar: Option<String>,
     pub excerpt: Option<String>,
     pub category: Option<String>,
     pub tags: Option<String>,
@@ -161,12 +161,12 @@ pub async fn create(
     let tags_json = parse_tags_json(form.tags.as_deref());
     let sources_json = parse_sources_json(form.sources.as_deref());
     
-    let title_en = form.title_en.as_deref().filter(|s| !s.trim().is_empty());
-    let slug_en = form.slug_en.as_deref().filter(|s| !s.trim().is_empty());
-    let excerpt_en = form.excerpt_en.as_deref().filter(|s| !s.trim().is_empty());
-    let content_markdown_en = form.content_markdown_en.as_deref().filter(|s| !s.trim().is_empty());
-    let content_html_en = content_markdown_en.map(render_markdown);
-    let meta_description_en = form.meta_description_en.as_deref().filter(|s| !s.trim().is_empty());
+    let title_ar = form.title_ar.as_deref().filter(|s| !s.trim().is_empty());
+    let slug_ar = form.slug_ar.as_deref().filter(|s| !s.trim().is_empty());
+    let excerpt_ar = form.excerpt_ar.as_deref().filter(|s| !s.trim().is_empty());
+    let content_markdown_ar = form.content_markdown_ar.as_deref().filter(|s| !s.trim().is_empty());
+    let content_html_ar = content_markdown_ar.map(render_markdown);
+    let meta_description_ar = form.meta_description_ar.as_deref().filter(|s| !s.trim().is_empty());
     
     let published_at = if status == "published" {
         Some(Utc::now())
@@ -180,7 +180,7 @@ pub async fn create(
         r#"
         INSERT INTO blog_posts (
             title, slug, content_markdown, content_html, 
-            title_en, slug_en, excerpt_en, content_markdown_en, content_html_en, meta_description_en,
+            title_ar, slug_ar, excerpt_ar, content_markdown_ar, content_html_ar, meta_description_ar,
             meta_description, excerpt,
             category, tags, sources, source_url, source_name, featured_image, status,
             reading_time_minutes, published_at, author_name
@@ -190,12 +190,12 @@ pub async fn create(
         .bind(&slug)
         .bind(&form.content_markdown)
         .bind(&content_html)
-        .bind(title_en)
-        .bind(slug_en)
-        .bind(excerpt_en)
-        .bind(content_markdown_en)
-        .bind(content_html_en.as_deref())
-        .bind(meta_description_en)
+        .bind(title_ar)
+        .bind(slug_ar)
+        .bind(excerpt_ar)
+        .bind(content_markdown_ar)
+        .bind(content_html_ar.as_deref())
+        .bind(meta_description_ar)
         .bind(&form.meta_description)
         .bind(&excerpt)
         .bind(&form.category)
@@ -265,21 +265,21 @@ pub async fn update(
     let tags_json = parse_tags_json(form.tags.as_deref());
     let sources_json = parse_sources_json(form.sources.as_deref());
     
-    let title_en = form.title_en.as_deref().filter(|s| !s.trim().is_empty());
-    let slug_en = form.slug_en.as_deref().filter(|s| !s.trim().is_empty());
-    let excerpt_en = form.excerpt_en.as_deref().filter(|s| !s.trim().is_empty());
-    let content_markdown_en = form.content_markdown_en.as_deref().filter(|s| !s.trim().is_empty());
-    let content_html_en = content_markdown_en.map(render_markdown);
-    let meta_description_en = form.meta_description_en.as_deref().filter(|s| !s.trim().is_empty());
+    let title_ar = form.title_ar.as_deref().filter(|s| !s.trim().is_empty());
+    let slug_ar = form.slug_ar.as_deref().filter(|s| !s.trim().is_empty());
+    let excerpt_ar = form.excerpt_ar.as_deref().filter(|s| !s.trim().is_empty());
+    let content_markdown_ar = form.content_markdown_ar.as_deref().filter(|s| !s.trim().is_empty());
+    let content_html_ar = content_markdown_ar.map(render_markdown);
+    let meta_description_ar = form.meta_description_ar.as_deref().filter(|s| !s.trim().is_empty());
     
-    let existing = sqlx::query("SELECT slug, slug_en, published_at FROM blog_posts WHERE id = ?")
+    let existing = sqlx::query("SELECT slug, slug_ar, published_at FROM blog_posts WHERE id = ?")
         .bind(post_id)
         .fetch_optional(&state.db)
         .await?
         .ok_or_else(|| AppError::NotFound("Artikel tidak ditemukan".into()))?;
         
     let old_slug: String = existing.try_get("slug").unwrap_or_default();
-    let old_slug_en: Option<String> = existing.try_get("slug_en").unwrap_or(None);
+    let old_slug_ar: Option<String> = existing.try_get("slug_ar").unwrap_or(None);
     let mut published_at: Option<chrono::DateTime<chrono::Utc>> = existing.try_get("published_at").unwrap_or(None);
     if status == "published" && published_at.is_none() {
         published_at = Some(Utc::now());
@@ -289,7 +289,7 @@ pub async fn update(
         r#"
         UPDATE blog_posts SET
             title = ?, slug = ?, content_markdown = ?, content_html = ?,
-            title_en = ?, slug_en = ?, excerpt_en = ?, content_markdown_en = ?, content_html_en = ?, meta_description_en = ?,
+            title_ar = ?, slug_ar = ?, excerpt_ar = ?, content_markdown_ar = ?, content_html_ar = ?, meta_description_ar = ?,
             meta_description = ?, excerpt = ?, category = ?, tags = ?, sources = ?, source_url = ?, source_name = ?,
             featured_image = ?, status = ?, reading_time_minutes = ?, published_at = ?,
             updated_at = CURRENT_TIMESTAMP
@@ -299,12 +299,12 @@ pub async fn update(
         .bind(&slug)
         .bind(&form.content_markdown)
         .bind(&content_html)
-        .bind(title_en)
-        .bind(slug_en)
-        .bind(excerpt_en)
-        .bind(content_markdown_en)
-        .bind(content_html_en.as_deref())
-        .bind(meta_description_en)
+        .bind(title_ar)
+        .bind(slug_ar)
+        .bind(excerpt_ar)
+        .bind(content_markdown_ar)
+        .bind(content_html_ar.as_deref())
+        .bind(meta_description_ar)
         .bind(&form.meta_description)
         .bind(&excerpt)
         .bind(&form.category)
@@ -320,9 +320,9 @@ pub async fn update(
         .execute(&state.db)
         .await?;
     
-    let _ = state.cache.invalidate_post(&slug, slug_en).await;
+    let _ = state.cache.invalidate_post(&slug, slug_ar).await;
     if !old_slug.is_empty() && old_slug != slug {
-        let _ = state.cache.invalidate_post(&old_slug, old_slug_en.as_deref()).await;
+        let _ = state.cache.invalidate_post(&old_slug, old_slug_ar.as_deref()).await;
     }
     let _ = state.cache.invalidate_all_listings().await;
 
@@ -412,16 +412,16 @@ pub async fn translate(
     let title: String = post.try_get("title").unwrap_or_default();
     let content_markdown: String = post.try_get("content_markdown").unwrap_or_default();
         
-    let slug_en = slugify(&title) + "-en";
-    let content_en = content_markdown; // Placeholder, real translate should happen here
-    let content_html_en = render_markdown(&content_en);
+    let slug_ar = slugify(&title) + "-en";
+    let content_ar = content_markdown; // Placeholder, real translate should happen here
+    let content_html_ar = render_markdown(&content_ar);
     
     sqlx::query(
-        "UPDATE blog_posts SET slug_en = ?, content_markdown_en = ?, content_html_en = ? WHERE id = ?"
+        "UPDATE blog_posts SET slug_ar = ?, content_markdown_ar = ?, content_html_ar = ? WHERE id = ?"
     )
-    .bind(slug_en)
-    .bind(content_en)
-    .bind(content_html_en)
+    .bind(slug_ar)
+    .bind(content_ar)
+    .bind(content_html_ar)
     .bind(post_id)
     .execute(&state.db)
     .await?;

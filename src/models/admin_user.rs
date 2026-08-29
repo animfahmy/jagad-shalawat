@@ -40,6 +40,17 @@ impl AdminUser {
         Ok(user)
     }
 
+    pub async fn find_by_username_or_email(pool: &MySqlPool, identifier: &str) -> Result<Option<AdminUser>, AppError> {
+        let user = sqlx::query_as::<_, AdminUser>(
+            "SELECT id, username, email, password_hash, display_name, role, is_active, reset_token, reset_token_expires_at, last_login_at, created_at FROM blog_admin_users WHERE username = ? OR email = ?"
+        )
+        .bind(identifier)
+        .bind(identifier)
+        .fetch_optional(pool)
+        .await?;
+        Ok(user)
+    }
+
     pub async fn find_by_reset_token(pool: &MySqlPool, token: &str) -> Result<Option<AdminUser>, AppError> {
         let user = sqlx::query_as::<_, AdminUser>(
             "SELECT id, username, email, password_hash, display_name, role, is_active, reset_token, reset_token_expires_at, last_login_at, created_at FROM blog_admin_users WHERE reset_token = ? AND reset_token_expires_at > NOW()"

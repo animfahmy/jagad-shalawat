@@ -43,7 +43,7 @@ pub async fn sitemap_xml(state: web::Data<AppState>) -> Result<HttpResponse, App
     ));
 
     // Individual articles
-    for (slug, slug_en, published_at) in &slugs {
+    for (slug, slug_ar, published_at) in &slugs {
         let lastmod = published_at
             .map(|d| d.format("%Y-%m-%d").to_string())
             .unwrap_or_else(|| Utc::now().format("%Y-%m-%d").to_string());
@@ -60,31 +60,31 @@ pub async fn sitemap_xml(state: web::Data<AppState>) -> Result<HttpResponse, App
             lastmod = lastmod,
         ));
 
-        if let Some(ref sen) = slug_en {
+        if let Some(ref sen) = slug_ar {
             xml.push_str(&format!(
-                r#"    <xhtml:link rel="alternate" hreflang="ar" href="{base}/blog/ar/{slug_en}"/>
+                r#"    <xhtml:link rel="alternate" hreflang="ar" href="{base}/blog/ar/{slug_ar}"/>
 "#,
                 base = state.config.base_url,
-                slug_en = sen,
+                slug_ar = sen,
             ));
         }
         xml.push_str("    <changefreq>monthly</changefreq>\n    <priority>0.7</priority>\n  </url>\n");
 
         // English version (if available)
-        if let Some(ref sen) = slug_en {
+        if let Some(ref sen) = slug_ar {
             xml.push_str(&format!(
                 r#"  <url>
-    <loc>{base}/blog/ar/{slug_en}</loc>
+    <loc>{base}/blog/ar/{slug_ar}</loc>
     <lastmod>{lastmod}</lastmod>
     <xhtml:link rel="alternate" hreflang="id" href="{base}/blog/{slug}"/>
-    <xhtml:link rel="alternate" hreflang="ar" href="{base}/blog/ar/{slug_en}"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="{base}/blog/ar/{slug_ar}"/>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 "#,
                 base = state.config.base_url,
                 slug = slug,
-                slug_en = sen,
+                slug_ar = sen,
                 lastmod = lastmod,
             ));
         }
