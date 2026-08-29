@@ -65,6 +65,9 @@
         <nav class="sidebar-nav">
             <a href="/blog/admin" class="nav-item">Dashboard</a>
             <a href="/blog/admin/posts" class="nav-item">Posts</a>
+            {% if user_role is defined and user_role == "admin" %}
+            <a href="/blog/admin/contributors" class="nav-item">Contributors</a>
+            {% endif %}
             <a href="/blog/admin/comments" class="nav-item">Comments</a>
             <a href="/blog/admin/blocked-words" class="nav-item">Blocked Words</a>
         </nav>

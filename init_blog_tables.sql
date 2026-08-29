@@ -61,9 +61,13 @@ CREATE TABLE IF NOT EXISTS blog_blocked_words (
 CREATE TABLE IF NOT EXISTS blog_admin_users (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL UNIQUE,
+    email VARCHAR(255) UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     display_name VARCHAR(255),
+    role ENUM('admin', 'contributor') DEFAULT 'admin',
     is_active BOOLEAN DEFAULT TRUE,
+    reset_token VARCHAR(255) UNIQUE,
+    reset_token_expires_at TIMESTAMP NULL,
     last_login_at TIMESTAMP NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

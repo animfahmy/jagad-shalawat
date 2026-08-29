@@ -22,6 +22,7 @@
         .btn-login:hover { background: var(--primary-dark); }
         
         .error-msg { background: #fee2e2; color: #b91c1c; padding: 0.75rem; border-radius: 0.375rem; font-size: 0.875rem; margin-bottom: 1.5rem; display: {% if error %}block{% else %}none{% endif %}; }
+        .success-msg { background: #d1fae5; color: #065f46; padding: 0.75rem; border-radius: 0.375rem; font-size: 0.875rem; margin-bottom: 1.5rem; display: {% if success %}block{% else %}none{% endif %}; }
     </style>
 </head>
 <body>
@@ -32,18 +33,28 @@
         {% if error %}
         <div class="error-msg">{{ error }}</div>
         {% endif %}
+
+        {% if success %}
+        <div class="success-msg">{{ success }}</div>
+        {% endif %}
         
         <form action="/blog/admin/login" method="POST">
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" class="form-control" required autofocus>
+                <input type="text" id="username" name="username" class="form-control" required>
             </div>
+            
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" class="form-control" required>
             </div>
-            <button type="submit" class="btn-login">Log In</button>
+            
+            <button type="submit" class="btn-login">Login</button>
         </form>
+        
+        <div style="text-align: center; margin-top: 1.5rem; font-size: 0.875rem;">
+            <a href="/blog/admin/forgot-password" style="color: #0d9488; text-decoration: none;">Lupa Password?</a>
+        </div>
     </div>
 </body>
 </html>

@@ -2,7 +2,7 @@ use actix_web::{web, HttpResponse, Responder, get, post, put, delete};
 use actix_session::Session;
 use crate::AppState;
 use crate::error::AppError;
-use crate::routes::admin::require_admin;
+use crate::routes::admin::require_auth;
 use serde::Deserialize;
 use slug::slugify;
 use crate::services::markdown::{render_markdown, calculate_reading_time, extract_first_paragraph};
@@ -43,7 +43,7 @@ pub async fn list(
     state: web::Data<AppState>,
     query: web::Query<PostQuery>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     
     let status = query.status.clone().unwrap_or_else(|| "all".to_string());
     
@@ -59,6 +59,8 @@ pub async fn list(
     };
 
     let mut ctx = tera::Context::new();
+    let role = session.get::<String>("user_role").unwrap_or(None).unwrap_or_else(|| "admin".to_string());
+    ctx.insert("user_role", &role);
     ctx.insert("posts", &posts);
     
     let html = state.tera.render("admin/posts_list.html", &ctx)?;
@@ -70,8 +72,10 @@ pub async fn new_form(
     session: Session,
     state: web::Data<AppState>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
-    let ctx = tera::Context::new();
+    require_auth(&session)?;
+    let mut ctx = tera::Context::new();
+    let role = session.get::<String>("user_role").unwrap_or(None).unwrap_or_else(|| "admin".to_string());
+    ctx.insert("user_role", &role);
     let html = state.tera.render("admin/post_editor.html", &ctx)?;
     Ok(HttpResponse::Ok().content_type("text/html").body(html))
 }
@@ -140,7 +144,7 @@ pub async fn create(
     state: web::Data<AppState>,
     form: web::Form<PostForm>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     
     let slug = form.slug.as_deref()
         .filter(|s| !s.trim().is_empty())
@@ -169,6 +173,8 @@ pub async fn create(
         None
     };
 
+    let display_name = session.get::<String>("display_name").unwrap_or(None).unwrap_or_else(|| "Tim Jagad Shalawat".to_string());
+
     sqlx::query(
         r#"
         INSERT INTO blog_posts (
@@ -176,8 +182,8 @@ pub async fn create(
             title_en, slug_en, excerpt_en, content_markdown_en, content_html_en, meta_description_en,
             meta_description, excerpt,
             category, tags, sources, source_url, source_name, featured_image, status,
-            reading_time_minutes, published_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            reading_time_minutes, published_at, author_name
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         "#)
         .bind(&form.title)
         .bind(&slug)
@@ -200,6 +206,7 @@ pub async fn create(
         .bind(status)
         .bind(reading_time)
         .bind(published_at)
+        .bind(&display_name)
         .execute(&state.db)
         .await?;
     
@@ -216,7 +223,7 @@ pub async fn edit_form(
     state: web::Data<AppState>,
     path: web::Path<u64>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     let post_id = path.into_inner();
     
     let post = sqlx::query_as::<_, BlogPost>("SELECT * FROM blog_posts WHERE id = ?")
@@ -226,6 +233,8 @@ pub async fn edit_form(
         .ok_or_else(|| AppError::NotFound("Artikel tidak ditemukan".into()))?;
         
     let mut ctx = tera::Context::new();
+    let role = session.get::<String>("user_role").unwrap_or(None).unwrap_or_else(|| "admin".to_string());
+    ctx.insert("user_role", &role);
     ctx.insert("post", &post);
     let html = state.tera.render("admin/post_editor.html", &ctx)?;
     Ok(HttpResponse::Ok().content_type("text/html").body(html))
@@ -238,7 +247,7 @@ pub async fn update(
     path: web::Path<u64>,
     form: web::Form<PostForm>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     let post_id = path.into_inner();
     
     let slug = form.slug.as_deref()
@@ -327,7 +336,7 @@ pub async fn delete(
     state: web::Data<AppState>,
     path: web::Path<u64>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     let post_id = path.into_inner();
     
     let post = sqlx::query("SELECT slug FROM blog_posts WHERE id = ?")
@@ -357,7 +366,7 @@ pub async fn publish(
     state: web::Data<AppState>,
     path: web::Path<u64>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     let post_id = path.into_inner();
     
     let post = sqlx::query("SELECT slug, published_at FROM blog_posts WHERE id = ?")
@@ -390,7 +399,7 @@ pub async fn translate(
     state: web::Data<AppState>,
     path: web::Path<u64>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     let post_id = path.into_inner();
     
     let post = sqlx::query("SELECT title, content_markdown FROM blog_posts WHERE id = ?")

@@ -2,7 +2,7 @@ use actix_web::{web, HttpResponse, Responder, get, post};
 use actix_session::Session;
 use crate::AppState;
 use crate::error::AppError;
-use crate::routes::admin::require_admin;
+use crate::routes::admin::require_auth;
 use chrono::{DateTime, Utc};
 
 #[derive(serde::Serialize, sqlx::FromRow)]
@@ -26,7 +26,7 @@ pub async fn index(
     session: Session,
     state: web::Data<AppState>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
 
     let total_published: (i64,) = sqlx::query_as("SELECT COUNT(*) FROM blog_posts WHERE status = 'published'")
         .fetch_one(&state.db)
@@ -53,6 +53,8 @@ pub async fn index(
     .await?;
 
     let mut ctx = tera::Context::new();
+    let role = session.get::<String>("user_role").unwrap_or(None).unwrap_or_else(|| "admin".to_string());
+    ctx.insert("user_role", &role);
     ctx.insert("stats", &DashboardStats {
         total_published_posts: total_published.0,
         total_draft_posts: total_draft.0,
@@ -71,7 +73,7 @@ pub async fn clear_cache(
     session: Session,
     state: web::Data<AppState>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
 
     state.cache.delete_pattern("blog:*").await?;
 

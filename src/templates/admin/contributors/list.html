@@ -1,0 +1,54 @@
+{% extends "admin/layout.html" %}
+
+{% block page_title %}Manajemen Kontributor{% endblock %}
+
+{% block admin_content %}
+<div class="card mb-4">
+    <div class="card-header">
+        Daftar Kontributor
+        <a href="/blog/admin/contributors/new" class="btn btn-primary btn-sm">Tambah Baru</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Nama Tampil</th>
+                        <th>Status</th>
+                        <th>Dibuat</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email | default(value="-") }}</td>
+                        <td>{{ user.display_name | default(value="-") }}</td>
+                        <td>
+                            {% if user.is_active == 1 %}
+                            <span class="badge badge-success">Aktif</span>
+                            {% else %}
+                            <span class="badge badge-error">Suspend</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <time class="local-datetime" datetime="{{ user.created_at | date(format='%Y-%m-%dT%H:%M:%SZ') }}">{{ user.created_at | date(format="%d %b %Y") }}</time>
+                        </td>
+                        <td>
+                            <a href="/blog/admin/contributors/{{ user.id }}/edit" class="btn btn-outline btn-sm">Edit</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">Belum ada kontributor</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

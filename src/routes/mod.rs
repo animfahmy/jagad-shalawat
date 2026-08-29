@@ -51,6 +51,19 @@ pub fn configure(cfg: &mut web::ServiceConfig) {
         .route("/blog/admin/login", web::get().to(admin::auth::login_page))
         .route("/blog/admin/login", web::post().to(admin::auth::login_submit))
         .route("/blog/admin/logout", web::get().to(admin::auth::logout))
+        
+        // Password Reset
+        .route("/blog/admin/forgot-password", web::get().to(admin::auth::forgot_password_page))
+        .route("/blog/admin/forgot-password", web::post().to(admin::auth::forgot_password_submit))
+        .route("/blog/admin/reset-password", web::get().to(admin::auth::reset_password_page))
+        .route("/blog/admin/reset-password", web::post().to(admin::auth::reset_password_submit))
+
+        // Admin: Contributors
+        .route("/blog/admin/contributors", web::get().to(admin::contributors::list))
+        .route("/blog/admin/contributors/new", web::get().to(admin::contributors::new_form))
+        .route("/blog/admin/contributors", web::post().to(admin::contributors::create))
+        .route("/blog/admin/contributors/{id}/edit", web::get().to(admin::contributors::edit_form))
+        .route("/blog/admin/contributors/{id}", web::post().to(admin::contributors::update))
 
         // Admin: Posts
         .route("/blog/admin/posts", web::get().to(admin::posts::list))

@@ -3,7 +3,7 @@ use actix_session::Session;
 use sqlx::Row;
 use crate::AppState;
 use crate::error::AppError;
-use crate::routes::admin::require_admin;
+use crate::routes::admin::require_auth;
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize)]
@@ -37,7 +37,7 @@ pub async fn list(
     state: web::Data<AppState>,
     query: web::Query<CommentQuery>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     
     let status = query.status.clone().unwrap_or_else(|| "all".to_string());
     let comments = if status == "all" {
@@ -73,6 +73,8 @@ pub async fn list(
     };
 
     let mut ctx = tera::Context::new();
+    let role = session.get::<String>("user_role").unwrap_or(None).unwrap_or_else(|| "admin".to_string());
+    ctx.insert("user_role", &role);
     ctx.insert("comments", &comments);
     
     let html = state.tera.render("admin/comments.html", &ctx)?;
@@ -85,7 +87,7 @@ pub async fn approve(
     state: web::Data<AppState>,
     path: web::Path<u64>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     let comment_id = path.into_inner();
     
     let comment_row = sqlx::query("SELECT c.post_id, p.slug, p.slug_en FROM blog_comments c LEFT JOIN blog_posts p ON c.post_id = p.id WHERE c.id = ?")
@@ -119,7 +121,7 @@ pub async fn reject(
     path: web::Path<u64>,
     form: web::Form<RejectForm>
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     let comment_id = path.into_inner();
     
     let comment_row = sqlx::query("SELECT c.post_id, p.slug, p.slug_en FROM blog_comments c LEFT JOIN blog_posts p ON c.post_id = p.id WHERE c.id = ?")

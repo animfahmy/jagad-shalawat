@@ -19,6 +19,9 @@ pub struct Config {
     pub gcs_bucket: Option<String>,
     pub gcs_credentials_path: Option<String>,
     pub translation_api_key: Option<String>,
+    pub smtp_username: Option<String>,
+    pub smtp_password: Option<String>,
+    pub smtp_server: Option<String>,
 }
 
 impl Config {
@@ -42,6 +45,9 @@ impl Config {
             gcs_bucket: env::var("GCS_BUCKET").ok(),
             gcs_credentials_path: env::var("GCS_CREDENTIALS_PATH").ok(),
             translation_api_key: env::var("TRANSLATION_API_KEY").ok(),
+            smtp_username: env::var("SMTP_USERNAME").ok(),
+            smtp_password: env::var("SMTP_PASSWORD").ok(),
+            smtp_server: env::var("SMTP_SERVER").unwrap_or_else(|_| "smtp-relay.brevo.com".to_string()).into(),
         }
     }
 }
