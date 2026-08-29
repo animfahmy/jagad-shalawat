@@ -13,10 +13,10 @@ pub fn require_admin(session: &Session) -> Result<(), AppError> {
     match session.get::<bool>("is_admin") {
         Ok(Some(true)) => {
             // Check if user is strictly admin (not contributor)
-            if let Ok(Some(role)) = session.get::<String>("user_role") {
-                if role == "admin" {
-                    return Ok(());
-                }
+            // If user_role is not set, default to "admin" for backward compatibility with old sessions
+            let role = session.get::<String>("user_role").unwrap_or(None).unwrap_or_else(|| "admin".to_string());
+            if role == "admin" {
+                return Ok(());
             }
             Err(AppError::Unauthorized)
         },

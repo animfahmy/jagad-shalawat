@@ -8,7 +8,7 @@ use actix_session::Session;
 use actix_multipart::Multipart;
 use futures_util::StreamExt;
 use crate::error::AppError;
-use crate::routes::admin::require_admin;
+use crate::routes::admin::require_auth;
 use image::imageops::FilterType;
 use uuid::Uuid;
 use std::fs;
@@ -18,7 +18,7 @@ pub async fn upload(
     session: Session,
     mut payload: Multipart
 ) -> Result<impl Responder, AppError> {
-    require_admin(&session)?;
+    require_auth(&session)?;
     
     let mut file_url = None;
     
